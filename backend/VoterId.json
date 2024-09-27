@@ -2,163 +2,270 @@
 	{
 		"name": "NISHA SANJAY SHAW",
 		"gender": "Female",
-		"VoterId": "WEH6401038"
+		"VoterId": "WEH6401038",
+		"location": {
+			"city": "Andheri",
+			"latitude": 19.1136,
+			"longitude": 72.835
+		}
 	},
 	{
 		"name": "Sadanand Bhagat",
 		"gender": "Male",
-		"VoterId": "WEH3413921"
+		"VoterId": "WEH3413921",
+		"location": {
+			"city": "Dadar",
+			"latitude": 19.0206,
+			"longitude": 72.8479
+		}
 	},
 	{
 		"name": "Hermon Mohan Bhagat",
 		"gender": "Male",
-		"VoterId": "WEH1741835"
+		"VoterId": "WEH1741835",
+		"location": {
+			"city": "Borivali",
+			"latitude": 19.227,
+			"longitude": 72.8504
+		}
 	},
 	{
 		"name": "Buresh Pandurang Bhagat",
 		"gender": "Male",
-		"VoterId": "WEH3413921"
+		"VoterId": "WEH3413921",
+		"location": {
+			"city": "Malad",
+			"latitude": 19.199,
+			"longitude": 72.85
+		}
 	},
 	{
 		"name": "GANESH LALU BHAGAT",
 		"gender": "Male",
-		"VoterId": "WEH3452179"
+		"VoterId": "WEH3452179",
+		"location": {
+			"city": "Kandivali",
+			"latitude": 19.2024,
+			"longitude": 72.8363
+		}
 	},
 	{
 		"name": "GHANSHYAM KAMALAKAR BHAGAT",
 		"gender": "Male",
-		"VoterId": "WEH4354243"
+		"VoterId": "WEH4354243",
+		"location": {
+			"city": "Thane",
+			"latitude": 19.2183,
+			"longitude": 72.9784
+		}
 	},
 	{
 		"name": "VITHAL BHAGAT",
 		"gender": "Male",
-		"VoterId": "WEH5660048"
+		"VoterId": "WEH5660048",
+		"location": {
+			"city": "Navi Mumbai",
+			"latitude": 19.033,
+			"longitude": 73.0297
+		}
 	},
 	{
 		"name": "SUNITRA RAVINDRA BHAGAT",
 		"gender": "Female",
-		"VoterId": "WEH4100956"
+		"VoterId": "WEH4100956",
+		"location": {
+			"city": "Vashi",
+			"latitude": 19.0903,
+			"longitude": 73.016
+		}
 	},
 	{
 		"name": "MANOJ BALKRISHNA BHAGAT",
 		"gender": "Male",
-		"VoterId": "WEH4354206"
+		"VoterId": "WEH4354206",
+		"location": {
+			"city": "Kalyan",
+			"latitude": 19.2186,
+			"longitude": 73.1585
+		}
 	},
 	{
 		"name": "VASAN HARISCHANDRA BHAGAT",
 		"gender": "Male",
-		"VoterId": "WEH9508939"
+		"VoterId": "WEH9508939",
+		"location": {
+			"city": "Dombivli",
+			"latitude": 19.2183,
+			"longitude": 73.1549
+		}
 	},
 	{
 		"name": "NILESH KAMLAKAR BHAGAT",
 		"gender": "Male",
-		"VoterId": "WEH4532465"
+		"VoterId": "WEH4532465",
+		"location": {
+			"city": "Ulhasnagar",
+			"latitude": 19.2135,
+			"longitude": 73.1505
+		}
 	},
 	{
 		"name": "BARU LALU BHAGAT",
 		"gender": "Male",
-		"VoterId": "WEH4354278"
+		"VoterId": "WEH4354278",
+		"location": {
+			"city": "Mira-Bhayandar",
+			"latitude": 19.3156,
+			"longitude": 72.8319
+		}
 	},
 	{
 		"name": "ANJALI FASH BHAGAT",
 		"gender": "Female",
-		"VoterId": "WEH1641012"
+		"VoterId": "WEH1641012",
+		"location": {
+			"city": "Bhayandar",
+			"latitude": 19.3212,
+			"longitude": 72.8254
+		}
 	},
 	{
 		"name": "MANOJ YASHWANT BHAGAT",
 		"gender": "Male",
-		"VoterId": "WEH4409253"
+		"VoterId": "WEH4409253",
+		"location": {
+			"city": "Virar",
+			"latitude": 19.3922,
+			"longitude": 72.8353
+		}
 	},
 	{
 		"name": "SANJAY PRAKASH BHAGAT",
 		"gender": "Male",
-		"VoterId": "WEH1565909"
+		"VoterId": "WEH1565909",
+		"location": {
+			"city": "Palghar",
+			"latitude": 19.671,
+			"longitude": 72.7463
+		}
 	},
 	{
 		"name": "MUKESH VITTHAL BHAGAT",
 		"gender": "Male",
-		"VoterId": "WEH6404097"
+		"VoterId": "WEH6404097",
+		"location": {
+			"city": "Boisar",
+			"latitude": 19.8283,
+			"longitude": 72.7127
+		}
 	},
 	{
 		"name": "Kiran Fadnavis",
 		"gender": "Male",
 		"fathers_name": "Fadnavis Kerala",
 		"age": 31,
-		"VoterId": "WEH3523024"
+		"VoterId": "WEH3523024",
+		"location": {
+			"city": "Bhiwandi",
+			"latitude": 19.3071,
+			"longitude": 73.0818
+		}
 	},
 	{
 		"name": "Mahesh Bandya Madhavi",
 		"gender": "Male",
 		"fathers_name": "Bandya Madhavi",
 		"age": 31,
-		"VoterId": "WEH1433322"
+		"VoterId": "WEH1433322",
+		"location": {
+			"city": "Kalyan",
+			"latitude": 19.2186,
+			"longitude": 73.1585
+		}
 	},
 	{
 		"name": "Pradeep Heriban",
 		"gender": "Male",
 		"fathers_name": "Heriban",
 		"age": 35,
-		"VoterId": "WEH3413254"
+		"VoterId": "WEH3413254",
+		"location": {
+			"city": "Navi Mumbai",
+			"latitude": 19.033,
+			"longitude": 73.0297
+		}
 	},
 	{
 		"name": "Monika Mahendra Mali",
 		"gender": "Female",
 		"husbands_name": "Mahendra Mali",
 		"age": 27,
-		"VoterId": "OJEH6401026"
+		"VoterId": "OJEH6401026",
+		"location": {
+			"city": "Andheri",
+			"latitude": 19.1136,
+			"longitude": 72.835
+		}
 	},
 	{
 		"name": "Vaifsha Ramesh Mere",
 		"gender": "Female",
 		"husbands_name": "Ramesh Mere",
 		"age": 33,
-		"VoterId": "WEH5660002"
+		"VoterId": "WEH5660002",
+		"location": {
+			"city": "Dadar",
+			"latitude": 19.0206,
+			"longitude": 72.8479
+		}
 	},
 	{
 		"name": "Mahesh Vasant Katela",
 		"gender": "Male",
 		"fathers_name": "Vasant Katela",
 		"age": 27,
-		"VoterId": "WEH161418C"
+		"VoterId": "WEH161418C",
+		"location": {
+			"city": "Borivali",
+			"latitude": 19.227,
+			"longitude": 72.8504
+		}
 	},
 	{
 		"name": "Rekha Naresh Madvi",
 		"gender": "Female",
 		"husbands_name": "Naresh Madvi",
-        "phoneNumber":"12312312312",
 		"age": 40,
-		"VoterId": "WEH3633175"
+		"VoterId": "WEH3633175",
+		"phoneNumber": "+91 9876543210",
+		"location": {
+			"city": "Malad",
+			"latitude": 19.199,
+			"longitude": 72.85
+		}
 	},
 	{
-		"name": "Ghanshyam Keshav Mali",
-		"gender": "Male",
-		"fathers_name": "Keshav Mali",
-        "phoneNumber":"98798797856",
-		"age": 29,
-		"VoterId": "WEH4332250"
+		"name": "Sarika Ganesh Bhosale",
+		"gender": "Female",
+		"husbands_name": "Ganesh Bhosale",
+		"age": 22,
+		"VoterId": "WEH1018259",
+		"phoneNumber": "8421786902",
+		"location": {
+			"city": "Kandivali",
+			"latitude": 19.2024,
+			"longitude": 72.8363
+		}
 	},
 	{
-		"name": "Chetan Ganesh Mali",
+		"name": "Sridhar Sunil Pillai",
 		"gender": "Male",
-		"fathers_name": "Ganesh Mali",
-        "phoneNumber":"8421786901",
-		"age": 25,
-		"VoterId": "WEH4333267"
-	},
-	{
-		"name": "Hitesh Manik Mhatre",
-		"gender": "Male",
-		"fathers_name": "Manik Mhatre",
-        "phoneNumber":"8421786901",
-		"age": 30,
-		"VoterId": "WEH6432765"
-	},
-    {
-        "name": "Sridhar Sunil Pillai",
-        "gender": "Male",
-        "fathers_name": "Sunil Pillai",
-        "age": 30,
-        "VoterId": "HEH64327651",
-        "phoneNumber":"8421786901"
-    }
+		"VoterId": "WEH3452179",
+		"phoneNumber": "8421786901",
+		"location": {
+			"city": "Virar",
+			"latitude": 19.4564,
+			"longitude": 72.7925
+		}
+	}
 ]

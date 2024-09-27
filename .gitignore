@@ -1,0 +1,18 @@
+# Node.js
+node_modules/
+
+# Logs
+logs
+*.log
+
+# Build files
+/build
+/dist
+
+# Nextjs
+/frontend/build
+/frontend/node_modules
+
+# Express
+/backend/node_modules
+/backend/.env

@@ -12,7 +12,7 @@ const navItems = [
     { title: "Your Area Candidates", description: "Information on Candidates", color: "bg-purple-500", to: "/CandidateSearch" },
     { title: "Election Management", description: "Election Management Details", color: "bg-red-500", to: "/ElectionManagementComponent" },
     { title: "Media & Publications", description: "Latest Media Updates", color: "bg-yellow-500", to: "/MediaPublicationsComponent" },
-    { title: "Voter Education", description: "Voter Education Resources", color: "bg-orange-500", to: "/VoterEducationComponent" },
+    { title: "Voter Education", description: "Voter Education Resources", color: "bg-orange-500", to: "/VoterEducation" },
     { title: "ICT Apps", description: "Explore Our Apps", color: "bg-green-500", to: "/ICTAppsComponent" },
 ];
 const ElectionComponent = () => {

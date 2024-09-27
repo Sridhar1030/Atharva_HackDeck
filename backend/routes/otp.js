@@ -68,7 +68,7 @@ router.post("/verify-otp", async (req, res) => {
         }
     } catch (error) {
         console.error("Twilio error:", error); // Log the error for debugging
-        res.status(500).json({ error: "Failed to verify OTP" });
+        res.status(500).json({ error: "Invalid OTP" });
     }
 });
 

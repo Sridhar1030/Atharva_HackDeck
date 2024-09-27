@@ -1,9 +1,13 @@
 import { Router } from "express";
-const router = Router();
 import { readFileSync } from "fs";
 import twilio from "twilio";
-require("dotenv").config();
+import dotenv from "dotenv";
 
+dotenv.config(); // Load environment variables from .env
+
+const router = Router();
+
+// Twilio client setup
 const client = twilio(
 	process.env.TWILIO_ACCOUNT_SID,
 	process.env.TWILIO_AUTH_TOKEN
@@ -17,7 +21,7 @@ function generateOTP() {
 	return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-// Send OTP
+// Send OTP route
 router.post("/send-otp", async (req, res) => {
 	const { voterId } = req.body;
 
@@ -42,6 +46,11 @@ router.post("/send-otp", async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ error: "Failed to send OTP" });
 	}
+});
+
+// Test route
+router.get("/test", (req, res) => {
+	res.send("Hello World");
 });
 
 export default router;

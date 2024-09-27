@@ -1,6 +1,8 @@
 import axios from 'axios'; // Import axios
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Assuming you're using react-router-dom for routing
+import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
 
 const Login = () => {
     const [voterId, setVoterId] = useState("");
@@ -16,7 +18,7 @@ const Login = () => {
         e.preventDefault();
 
         if (voterId === "") {
-            alert('Voter ID is required');
+            toast.error('Voter ID is required'); // Show error toast
             return;
         }
 
@@ -27,7 +29,7 @@ const Login = () => {
 
             // Assuming response contains a phone number
             const phoneNumber = response.data.user.phoneNumber;
-            const masked = `*******${phoneNumber.slice(-2)}`; // Mask all but the last 2 digits
+            const masked = `******${phoneNumber.slice(-3)}`; // Mask all but the last 2 digits
 
             setMaskedPhoneNumber(masked);
 
@@ -36,9 +38,9 @@ const Login = () => {
 
             localStorage.setItem('user', JSON.stringify(response.data)); // Store user data
 
+
         } catch (error) {
-            console.error("Error logging in:", error);
-            alert('Login failed, please try again.');
+            toast.error( error.response?.data.message ||'Login failed, please try again.'); // Show error toast
         }
     };
 
@@ -46,14 +48,16 @@ const Login = () => {
         const user = JSON.parse(localStorage.getItem('user'));
         console.log("Phone number:", user.user.phoneNumber);
         try {
-
-            const response = await axios.post('http://localhost:8000/api/otp/send-otp', { phoneNumber: user.user.phoneNumber });
+            const response = await axios.post('http://localhost:8000/api/otp/send-otp', { phoneNumber: "8766432949" });
             console.log("Response:", response.data);
             
-            navigate('/otpverification'); // Assuming /verify-otp is your OTP verification route
+            toast.success('OTP sent successfully!'); // Show success toast
+            setTimeout(()=>{ 
+                navigate('/otpverification');
+            },1000) 
         } catch (error) {
             console.error("Error sending OTP:", error);
-            alert('OTP sending failed, please try again.');
+            toast.error('OTP sending failed, please try again.'); // Show error toast
         }
     };
 
@@ -108,6 +112,9 @@ const Login = () => {
                     </>
                 )}
             </form>
+
+            {/* Toast container to display notifications */}
+            <ToastContainer />
         </div>
     );
 };

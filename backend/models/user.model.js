@@ -37,7 +37,22 @@ const userShema = new mongoose.Schema(
         otp:{
             type: String,
             trim: true,
-        }
+        },
+        location: [{
+            _id: false,
+            city: {
+                type: String,
+                trim: true,
+            },
+            latitude: {
+                type: Number,
+                required: true,
+            },
+            longitude: {
+                type: Number,
+                required: true,
+            }
+        }]
     },
 
     {

@@ -10,6 +10,8 @@ import CandidateSearch from './components/home/CandidateSearch';
 import { TextSizeProvider } from './components/common/TextSizeContext';
 import VotingPage from './components/vote/VotingPage';
 import CandidateDetail from './components/home/CandidateDetail';
+import LocationPage from './components/Location/LocationPage';
+
 import VoterEducation from './components/home/VoterEducation';
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
             <Route path="/candidate/:name" element={<CandidateDetail />} />
             <Route path="/votereducation" element={<VoterEducation />} />
             <Route path="Vote" element={<VotingPage />} />
+            <Route path="/location" element={<LocationPage />} /> {/* New route */}
+
 
           </Route>
         </Routes>

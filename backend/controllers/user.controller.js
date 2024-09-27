@@ -1,9 +1,9 @@
-import { User } from "../models/user.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import { User } from "../models/user.model.js";
 
 const generateAccessTokenAndRefreshToken = async (userId) => {
     try {
@@ -24,13 +24,10 @@ const generateAccessTokenAndRefreshToken = async (userId) => {
     }
 };
 
-
-
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const voterDataPath = path.join(__dirname, '../VoterId.json');
+const voterDataPath = path.join(__dirname, "../VoterId.json");
 
 const loginUser = asyncHandler(async (req, res) => {
     const { voterId } = req.body;
@@ -41,15 +38,15 @@ const loginUser = asyncHandler(async (req, res) => {
 
     let voterData;
     try {
-        const data = fs.readFileSync(voterDataPath, 'utf-8');
+        const data = fs.readFileSync(voterDataPath, "utf-8");
         voterData = JSON.parse(data);
     } catch (err) {
-        return res.status(500).json({ message: "Error reading voter data file" });
+        return res
+            .status(500)
+            .json({ message: "Error reading voter data file" });
     }
 
-    const voter = voterData.find(voter => voter.VoterId === voterId);
-
-    console.log(voter.name)
+    const voter = voterData.find((voter) => voter.VoterId === voterId);
 
     if (!voter) {
         return res.status(400).json({
@@ -67,6 +64,13 @@ const loginUser = asyncHandler(async (req, res) => {
             age: voter.age,
             voterId: voter.VoterId,
             phoneNumber: voter.phoneNumber,
+            location: [
+                {
+                    city: voter.location.city,
+                    latitude: voter.location.latitude,
+                    longitude: voter.location.longitude,
+                },
+            ],
         });
 
         await user.save();
@@ -78,11 +82,10 @@ const loginUser = asyncHandler(async (req, res) => {
     delete userData.password;
     delete userData.refreshToken;
 
-    console.log("userdata"  , userData)
 
     const options = {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === 'production',
     };
 
     return res
@@ -91,10 +94,25 @@ const loginUser = asyncHandler(async (req, res) => {
         .cookie("accessToken", accessToken, options)
         .json({
             message: "User logged in successfully",
-            user,
+            user: userData,
             accessToken,
         });
 });
 
 
-export {  loginUser };
+const getUserLocation = asyncHandler(async (req, res) => {
+    const { _id } = req.params; 
+    const user = await User.findById(_id);
+
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({
+        message: "User location fetched successfully",
+        location: user.location,
+    }); 
+});
+
+
+export { loginUser , getUserLocation};

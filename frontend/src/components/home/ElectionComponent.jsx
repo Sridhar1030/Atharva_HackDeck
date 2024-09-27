@@ -31,34 +31,53 @@ const ElectionComponent = () => {
             <h1 className="text-center text-3xl font-bold my-6  ">Voting Portal of India For Disabled and Aged</h1>
 
             {/* Carousel */}
-            <div className=" max-w-7xl mx-auto  mb-6">
+            <div className=" max-w-7xl mx-auto  mb-6 ">
                 <Slider {...settings}>
-                    <div className="h-96 w-full flex items-center justify-center">  {/* Increased height */}
+                    <div className="sxs:h-96 md:h-96  w-full flex items-center justify-center">  {/* Increased height */}
                         <img
                             src={first}
                             width={1000}
-                            height={1000}
+                            height={1500}
                             alt="Slide 1"
                             className="w-full h-full object-cover"
                         />
                     </div>
-                    <div className="h-96 w-full flex items-center justify-center">  {/* Increased height */}
+                    <div className="sxs:h-96 md:h-1500 w-full flex items-center justify-center">  {/* Increased height */}
                         <img
                             src={second}
+
+                            width={1000}
+                            height={1500}
                             alt="Slide 2"
                             className="w-full h-full object-cover"
                         />
                     </div>
-                    <div className="h-96 w-full flex items-center justify-center">  {/* Increased height */}
+                    <div className="sxs:h-96 md:h-1500 w-full flex items-center justify-center">  {/* Increased height */}
                         <img
                             src={third}
+
+                            width={1000}
+                            height={1500}
                             alt="Slide 3"
                             className="w-full h-full object-cover"
                         />
                     </div>
-                    <div className="h-96 w-full flex items-center justify-center">  {/* Increased height */}
+                    <div className="sxs:h-96 md:h-1500 w-full flex items-center justify-center">  {/* Increased height */}
+                        <img
+                            src={fourth}
+
+                            width={1000}
+                            height={1500}
+                            alt="Slide 3"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    <div className="sxs:h-96 md:h-1500 w-full flex items-center justify-center">  {/* Increased height */}
                         <img
                             src={fifth}
+
+                            width={1000}
+                            height={1500}
                             alt="Slide 4"
                             className="w-full h-full object-cover"
                         />
@@ -74,7 +93,7 @@ const ElectionComponent = () => {
                 </marquee>
             </div>
 
-            <marquee className="bg-white p-4" scrollamount="10" behavior="scroll" direction="left">
+            <marquee className="bg-white p-4" scrollamount="5" behavior="smooth" direction="left">
                 <div className="flex space-x-4"> {/* Removed unnecessary divs for simplicity */}
                     {navItems.map((item, index) => (
                         <NavLink

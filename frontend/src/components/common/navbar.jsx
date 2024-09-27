@@ -33,7 +33,8 @@ function Navbar() {
     return (
         <div className="relative w-full bg-white">
             <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
-                <div className="inline-flex items-center space-x-2">
+                <NavLink to={"/"} className="inline-flex items-center space-x-2">
+
                     <span>
                         <svg
                             width="30"
@@ -49,7 +50,7 @@ function Navbar() {
                         </svg>
                     </span>
                     <span className="font-bold">Voter's Platform</span>
-                </div>
+                </NavLink>
                 <div className="hidden grow items-start lg:flex">
                     <ul className="ml-12 inline-flex space-x-8">
                         {menuItems.map((item) => (
@@ -73,7 +74,7 @@ function Navbar() {
                         type="button"
                         // onClick={handleSubmit}
                         to={"/login"}
-                        className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                        className="rounded-md bg-[#004274] px-3 py-2 text-sm font-semibold text-[#ace8fe] hover:bg-[#ace8fe] hover:text-[#004274] "
                     >
                         Log In
                     </NavLink>

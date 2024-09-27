@@ -1,26 +1,67 @@
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
 
 const OTPVerification = () => {
     const [otp, setOtp] = useState('');
+    const [countdown, setCountdown] = useState(0); // For managing the countdown
+    const navigate = useNavigate();
+
+    // useEffect to handle countdown logic
+    useEffect(() => {
+        let timer;
+        if (countdown > 0) {
+            timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+        }
+        return () => clearTimeout(timer);
+    }, [countdown]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const user = JSON.parse(localStorage.getItem('user'));
+    
+        try {
+            const response = await axios.post('http://localhost:8000/api/otp/verify-otp', {
+                voterId: user.user?.voterId,
+                otp
+            });
+            console.log("Response:", response?.data);
+    
+            // Show success toast message
+            toast.success("OTP verified successfully!");
 
+            // Redirect on successful verification
+            setTimeout(() => {
+                navigate("/");  // Redirect after a short delay
+            }, 1000);  // 2 second delay
+        } catch (error) {
+            console.error("Error verifying OTP:", error.response?.data, error);
 
+            // Show error toast message
+            toast.error("OTP verification failed. Please try again.");
+        }
+    };
+
+    const handleSendOtp = async () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        console.log("Phone number:", user.user.phoneNumber);
         try {
 
-            const response = await axios.post('http://localhost:8000/api/otp/verify-otp', { voterId: user.user.voterId, otp });
+            const response = await axios.post('http://localhost:8000/api/otp/send-otp', { phoneNumber: "8421786901" });
             console.log("Response:", response.data);
-            Navigate("/")
-        } catch (error) {
-            console.log("Error verifying OTP:", error);
-        }
 
-        console.log('OTP Submitted:', otp);
+            // Start 60-second countdown after sending the OTP
+            setCountdown(60);
+
+            // Show success toast message
+            toast.success("OTP sent successfully!");
+        } catch (error) {
+            console.error("Error sending OTP:", error);
+            toast.error("OTP sending failed, please try again.");
+        }
     };
 
     return (
@@ -52,11 +93,24 @@ const OTPVerification = () => {
                         Verify OTP
                     </button>
                 </form>
-
                 <p className="mt-4 text-center text-sm text-gray-600">
-                    Didn’t receive the OTP? <a href="#" className="text-blue-500">Resend OTP</a>
+                    Didn’t receive the OTP? 
+                <br />
+                    <button 
+                        onClick={handleSendOtp} 
+                        className={`text-blue-500 font-semibold mt-2 ${countdown > 0 
+                            ? 'opacity-50 cursor-not-allowed bg-gray-300 px-4 py-2 rounded-lg' 
+                            : 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-300'}`}
+                        disabled={countdown > 0}
+                    >
+                        {countdown > 0 ? `Resend OTP in ${countdown}s` : 'Resend OTP'}
+                    </button>
                 </p>
+
             </div>
+
+            {/* Toast container to show toast messages */}
+            <ToastContainer />
         </div>
     );
 };

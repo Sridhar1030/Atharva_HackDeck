@@ -7,6 +7,8 @@ import OtpRouter from "./routes/otp.js";
 import adminRoutes from "./routes/admin.route.js";
 import partyRoutes from "./routes/party.routes.js";
 import { userRouter } from "./routes/user.routes.js";
+import bodyParser from 'body-parser';
+
 
 dotenv.config(); // Load environment variables from .env
 
@@ -21,6 +23,8 @@ app.use(
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(bodyParser.json({ limit: '10mb' })); // Adjust the limit as needed
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 const voterIdPath = path.join(process.cwd(), "voterId.json");
 let voterId = [];
@@ -41,9 +45,13 @@ app.use((req, res, next) => {
 
 // Use the OTP router for /api/otp routes
 app.use("/api/otp", OtpRouter);
-app.use('/api/admin', adminRoutes); 
-app.use('/api/party', partyRoutes); 
+app.use("/api/admin", adminRoutes);
+app.use("/api/party", partyRoutes);
 
 app.use("/api/auth", userRouter);
+import voteRoutes from "./routes/vote.routes.js";
+
+// Middleware to use the voting routes
+app.use("/api", voteRoutes);
 
 export { app };

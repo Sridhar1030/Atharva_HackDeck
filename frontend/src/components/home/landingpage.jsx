@@ -3,23 +3,19 @@ import Slider from 'react-slick';
 import CurrentIssuesPage from './CurrentIssuesPage';
 import ElectionComponent from './ElectionComponent';
 import ElectorsComponent from './ElectorsComponent';
+import ScrollTop from '../common/ScrollTop';
+import ElectionInfo from './ElectionInfo';
+
 
 const LandingPage = () => {
-    // Carousel settings
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 3000,
-    };
+
 
     return (
         <>
             <ElectionComponent />
             <CurrentIssuesPage />
+            <ElectionInfo />
+            <ScrollTop />
         </>
     );
 };

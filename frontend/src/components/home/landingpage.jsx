@@ -5,6 +5,7 @@ import ElectionComponent from './ElectionComponent';
 import ElectorsComponent from './ElectorsComponent';
 import ScrollTop from '../common/ScrollTop';
 import ElectionInfo from './ElectionInfo';
+import Faq from './Faqs';
 
 
 const LandingPage = () => {
@@ -15,6 +16,7 @@ const LandingPage = () => {
             <ElectionComponent />
             <CurrentIssuesPage />
             <ElectionInfo />
+            <Faq />
             <ScrollTop />
         </>
     );

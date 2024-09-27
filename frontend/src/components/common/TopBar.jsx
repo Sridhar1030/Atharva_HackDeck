@@ -36,7 +36,7 @@ const TopBar = () => {
     const { increaseTextSize } = useTextSize(); // Use the context
 
     return (
-        <nav className="bg-[#004274] text-[#ace8fe] px-14 py-2 flex justify-between items-center text-xs hidden md:block md:flex">
+        <nav className="bg-[#004274]  px-14 py-2 flex justify-between items-center text-xs hidden md:block md:flex">
             <div className="flex space-x-4 gap-6">
                 <a href="#" className="text-[#ace8fe] text-[16px] font-semibold border-b-2 border-black"></a>
                 <a href="#" className="text-[#ace8fe] text-[16px] font-semibold hover:underline">ARCHITECTURE</a>
@@ -53,7 +53,7 @@ const TopBar = () => {
                         <div className="h-1/3 bg-green-600"></div>
                     </div>
                 </div>
-                <div className="bg-white rounded px-1 py-0.5 text-xs">
+                <div className="bg-white rounded px-1 py-0.5 text-xs text-black hover:text-[#ace8fe]">
                     <option>Voters portal</option>
                 </div>
             </div>

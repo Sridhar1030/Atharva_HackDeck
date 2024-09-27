@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
 import OtpRouter from "./routes/otp.js"; // Import the otp route with ES6
+import { userRouter } from "./routes/user.routes.js";
 
 dotenv.config(); // Load environment variables from .env
 
@@ -38,5 +39,6 @@ app.use((req, res, next) => {
 
 // Use the OTP router for /api/otp routes
 app.use("/api/otp", OtpRouter);
+app.use("/api/auth", userRouter);
 
 export { app };

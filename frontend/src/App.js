@@ -10,6 +10,7 @@ import CandidateSearch from './components/home/CandidateSearch';
 import { TextSizeProvider } from './components/common/TextSizeContext';
 import VotingPage from './components/vote/VotingPage';
 import CandidateDetail from './components/home/CandidateDetail';
+import VoterEducation from './components/home/VoterEducation';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="ElectorsComponent" element={<ElectorsComponent />} />
             <Route path="CandidateSearch" element={<CandidateSearch />} />
             <Route path="/candidate/:name" element={<CandidateDetail />} />
+            <Route path="/votereducation" element={<VoterEducation />} />
             <Route path="Vote" element={<VotingPage />} />
 
           </Route>

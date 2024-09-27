@@ -9,48 +9,72 @@ const router = Router();
 
 // Twilio client setup
 const client = twilio(
-	process.env.TWILIO_ACCOUNT_SID,
-	process.env.TWILIO_AUTH_TOKEN
+    process.env.TWILIO_ACCOUNT_SID,
+    process.env.TWILIO_AUTH_TOKEN
 );
 
 // Load the voter data from JSON file
 const voterData = JSON.parse(readFileSync("./voterId.json", "utf-8"));
 
-// Generate a random OTP
-function generateOTP() {
-	return Math.floor(100000 + Math.random() * 900000).toString();
-}
-
 // Send OTP route
 router.post("/send-otp", async (req, res) => {
-	const { voterId } = req.body;
+    const { voterId } = req.body;
 
-	// Find voter by VoterId
-	const voter = voterData.find((voter) => voter.VoterId === voterId);
+    // Find voter by VoterId
+    const voter = voterData.find((voter) => voter.VoterId === voterId);
 
-	if (!voter) {
-		return res.status(404).json({ message: "Voter not found" });
-	}
+    if (!voter) {
+        return res.status(404).json({ message: "Voter not found" });
+    }
 
-	const otp = generateOTP();
+    const phoneNumber = 8421786901; // Use the voter's phone number
 
-	try {
-		// Send OTP using Twilio
-		await client.messages.create({
-			body: `Your OTP is ${otp}`,
-			from: process.env.TWILIO_PHONE_NUMBER,
-			to: voter.phoneNumber,
-		});
+    try {
+        // Send verification request using Twilio Verify API
+        await client.verify.services(process.env.TWILIO_VERIFY_SERVICE_SID)
+            .verifications
+            .create({ to: `+91${phoneNumber}`, channel: 'sms' });
 
-		res.status(200).json({ message: "OTP sent successfully!" });
-	} catch (error) {
-		res.status(500).json({ error: "Failed to send OTP" });
-	}
+        res.status(200).json({ message: "OTP sent successfully!" });
+    } catch (error) {
+        console.error("Twilio error:", error); // Log the error for debugging
+        res.status(500).json({ error: "Failed to send OTP" });
+    }
+});
+
+// Verify OTP route
+router.post("/verify-otp", async (req, res) => {
+    const { voterId, otp } = req.body;
+
+    // Find voter by VoterId
+    const voter = voterData.find((voter) => voter.VoterId === voterId);
+
+    if (!voter) {
+        return res.status(404).json({ message: "Voter not found" });
+    }
+
+    const phoneNumber = voter.phoneNumber; // Use the voter's phone number
+
+    try {
+        // Verify the OTP using Twilio Verify API
+        const verificationCheck = await client.verify.services(process.env.TWILIO_VERIFY_SERVICE_SID)
+            .verificationChecks
+            .create({ to: `+91${phoneNumber}`, code: otp });
+
+        if (verificationCheck.status === 'approved') {
+            res.status(200).json({ message: "OTP verified successfully!" });
+        } else {
+            res.status(400).json({ message: "Invalid OTP" });
+        }
+    } catch (error) {
+        console.error("Twilio error:", error); // Log the error for debugging
+        res.status(500).json({ error: "Failed to verify OTP" });
+    }
 });
 
 // Test route
 router.get("/test", (req, res) => {
-	res.send("Hello World");
+    res.send("Hello World");
 });
 
 export default router;

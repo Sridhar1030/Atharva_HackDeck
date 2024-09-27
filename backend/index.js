@@ -1,14 +1,19 @@
-import express from 'express';
+import { app } from "./app.js";
+import dotenv from "dotenv";
+import { connectDB } from "./config/index.js";
 
-const app = express();
+dotenv.config({
+    path: "./.env"
+});
 
-//Middleware
 
-
-//Routes
-
-//Server Run
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-})
+connectDB()
+    .then(() => {
+        app.listen(process.env.PORT, () => {
+            console.log(` ⚙️ Server is running on port http://localhost:${process.env.PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.error(` ❌ fail to connect: ${error.message}`);
+        process.exit(1);
+    });

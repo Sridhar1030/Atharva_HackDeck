@@ -7,11 +7,9 @@ const generateAccessTokenAndRefreshToken = async (userId) => {
     try {
         const user = await User.findById(userId);
 
-        // Generate access token and refresh token
         const accessToken = user.generateAccessToken();
         const refreshToken = user.generateRefreshToken();
 
-        // Save the refresh token in the database
         user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false });
 
@@ -25,8 +23,7 @@ const generateAccessTokenAndRefreshToken = async (userId) => {
 };
 
 
-// Path to your voterId.json file
-const voterDataPath = path.join(__dirname, 'voterId.json');
+const voterDataPath = path.join(__dirname, '../VoterId.json');
 
 const loginUser = asyncHandler(async (req, res) => {
     const { voterId } = req.body;
@@ -35,7 +32,6 @@ const loginUser = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Read and parse the JSON data from voterId.json
     let voterData;
     try {
         const data = fs.readFileSync(voterDataPath, 'utf-8');

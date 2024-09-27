@@ -12,13 +12,13 @@ const ElectionInfo = () => {
                 <img
                     src={map}
                     alt="India Map"
-                    className="w-full h-auto object-contain"
+                    className="w-full h-auto object-contain "
                 />
 
             </div>
 
             {/* Right Side - Election Information */}
-            <div className="md:w-1/2 bg-blue-900 text-white p-6 rounded-lg">
+            <div className="md:w-1/2 bg-blue-900 text-white p-2 rounded-lg">
                 {/* Current Elections */}
                 <div className="mb-6">
                     <h3 className="text-lg font-semibold border-b-2 border-blue-400 pb-2 mb-4">

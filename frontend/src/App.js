@@ -5,8 +5,7 @@ import Layout from './layout';
 import LandingPage from './components/home/landingpage';
 import Login from './components/auth/login';
 import OTPVerification from './components/auth/otpVerification';
-
-
+import ElectorsComponent from './components/home/ElectorsComponent';
 
 function App() {
   return (
@@ -15,12 +14,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/otpverification" element={<OTPVerification />} />
 
-
-
+        {/* Set the LandingPage as the default route for the root path */}
         <Route path="/" element={<Layout />}>
-          <Route path="/landingpage" element={<LandingPage />} />
-
-
+          <Route index element={<LandingPage />} /> {/* This sets LandingPage as the default component for "/" */}
+          <Route path="ElectorsComponent" element={<ElectorsComponent />} />
         </Route>
       </Routes>
     </>

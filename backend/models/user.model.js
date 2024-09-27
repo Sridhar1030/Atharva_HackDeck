@@ -6,13 +6,19 @@ const userShema = new mongoose.Schema(
     {
         fullName: {
             type: String,
-            required: true,
             trim: true,
             index: true,
         },
         gender: {
             type: String,
-            required: true,
+            trim: true,
+        },
+        fathers_name:{
+            type: String,
+            trim: true,
+        },
+        phoneNumber:{
+            type: String,
             trim: true,
         },
         refreshToken: {
@@ -30,7 +36,6 @@ const userShema = new mongoose.Schema(
         },
         otp:{
             type: String,
-            required: true,
             trim: true,
         }
     },

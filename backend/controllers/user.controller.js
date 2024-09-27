@@ -2,6 +2,8 @@ import { User } from "../models/user.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const generateAccessTokenAndRefreshToken = async (userId) => {
     try {
@@ -23,6 +25,11 @@ const generateAccessTokenAndRefreshToken = async (userId) => {
 };
 
 
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const voterDataPath = path.join(__dirname, '../VoterId.json');
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -40,8 +47,9 @@ const loginUser = asyncHandler(async (req, res) => {
         return res.status(500).json({ message: "Error reading voter data file" });
     }
 
-    // Find the voter in the JSON data
     const voter = voterData.find(voter => voter.VoterId === voterId);
+
+    console.log(voter.name)
 
     if (!voter) {
         return res.status(400).json({
@@ -49,30 +57,28 @@ const loginUser = asyncHandler(async (req, res) => {
         });
     }
 
-    // Check if the voter already exists in the database
     let user = await User.findOne({ voterId: voterId });
 
     if (!user) {
-        // If the user doesn't exist, create a new user with the voter data
         user = new User({
-            name: voter.name,
+            fullName: voter.name,
             gender: voter.gender,
             fathers_name: voter.fathers_name || voter.husbands_name,
             age: voter.age,
             voterId: voter.VoterId,
-            // Add other fields if necessary
+            phoneNumber: voter.phoneNumber,
         });
 
         await user.save();
     }
 
-    // Generate access token and refresh token
     const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
 
-    // Remove sensitive fields
     const userData = user.toObject();
     delete userData.password;
     delete userData.refreshToken;
+
+    console.log("userdata"  , userData)
 
     const options = {
         httpOnly: true,
@@ -85,37 +91,10 @@ const loginUser = asyncHandler(async (req, res) => {
         .cookie("accessToken", accessToken, options)
         .json({
             message: "User logged in successfully",
-            user: userData,
+            user,
             accessToken,
         });
 });
 
 
-const logoutUser = asyncHandler(async (req, res) => {
-    await User.findByIdAndUpdate(
-        req?.user?._id,
-        {
-            $unset: {
-                refreshToken: 1,
-            },
-        },
-        {
-            new: true,
-        }
-    );
-
-    const options = {
-        httpOnly: true,
-        secure: true,
-    };
-
-    return res
-        .status(200)
-        .clearCookie("refreshToken", options)
-        .clearCookie("accessToken", options)
-        .json({
-            message: "User logged out successfully",
-        });
-});
-
-export { registerUser, loginUser, logoutUser };
+export {  loginUser };

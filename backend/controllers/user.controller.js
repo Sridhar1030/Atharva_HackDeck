@@ -1,5 +1,7 @@
 import { User } from "../models/user.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import fs from 'fs';
+import path from 'path';
 
 const generateAccessTokenAndRefreshToken = async (userId) => {
     try {
@@ -22,23 +24,56 @@ const generateAccessTokenAndRefreshToken = async (userId) => {
     }
 };
 
+
+// Path to your voterId.json file
+const voterDataPath = path.join(__dirname, 'voterId.json');
+
 const loginUser = asyncHandler(async (req, res) => {
     const { voterId } = req.body;
 
     if (!voterId) {
-        res.status(400).json({ message: "All fields are required" });
+        return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Check if user exists
+    // Read and parse the JSON data from voterId.json
+    let voterData;
+    try {
+        const data = fs.readFileSync(voterDataPath, 'utf-8');
+        voterData = JSON.parse(data);
+    } catch (err) {
+        return res.status(500).json({ message: "Error reading voter data file" });
+    }
 
-    // Check if password is correct
+    // Find the voter in the JSON data
+    const voter = voterData.find(voter => voter.VoterId === voterId);
 
+    if (!voter) {
+        return res.status(400).json({
+            message: "VoterId not verified. Please use a valid participant VoterId.",
+        });
+    }
+
+    // Check if the voter already exists in the database
+    let user = await User.findOne({ voterId: voterId });
+
+    if (!user) {
+        // If the user doesn't exist, create a new user with the voter data
+        user = new User({
+            name: voter.name,
+            gender: voter.gender,
+            fathers_name: voter.fathers_name || voter.husbands_name,
+            age: voter.age,
+            voterId: voter.VoterId,
+            // Add other fields if necessary
+        });
+
+        await user.save();
+    }
 
     // Generate access token and refresh token
-    const { accessToken, refreshToken } =
-        await generateAccessTokenAndRefreshToken(user._id);
+    const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
 
-    // Remove sensitive fields before sending response
+    // Remove sensitive fields
     const userData = user.toObject();
     delete userData.password;
     delete userData.refreshToken;
@@ -58,6 +93,7 @@ const loginUser = asyncHandler(async (req, res) => {
             accessToken,
         });
 });
+
 
 const logoutUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(

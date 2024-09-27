@@ -1,11 +1,25 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
 const OTPVerification = () => {
     const [otp, setOtp] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Add your OTP verification logic here
+
+        const user = JSON.parse(localStorage.getItem('user'));
+
+
+        try {
+
+            const response = await axios.post('http://localhost:8000/api/otp/verify-otp', { voterId: user.user.voterId, otp });
+            console.log("Response:", response.data);
+            Navigate("/")
+        } catch (error) {
+            console.log("Error verifying OTP:", error);
+        }
+
         console.log('OTP Submitted:', otp);
     };
 

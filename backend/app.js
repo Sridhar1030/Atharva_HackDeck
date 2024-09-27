@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import OtpRouter from "./routes/otp.js";
 import adminRoutes from "./routes/admin.route.js";
 import partyRoutes from "./routes/party.routes.js";
+import { userRouter } from "./routes/user.routes.js";
 
 dotenv.config(); // Load environment variables from .env
 
@@ -43,5 +44,6 @@ app.use("/api/otp", OtpRouter);
 app.use('/api/admin', adminRoutes); 
 app.use('/api/party', partyRoutes); 
 
+app.use("/api/auth", userRouter);
 
 export { app };

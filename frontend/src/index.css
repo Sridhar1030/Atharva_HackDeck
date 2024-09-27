@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* index.css */
+@import '~slick-carousel/slick/slick.css';
+@import '~slick-carousel/slick/slick-theme.css';
+
+/* Optional custom styles for better scrolling experience */
+.flex-nowrap {
+    overflow-x: auto;
+    /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory;
+    /* Snap to grid */
+}
+
+.flex-nowrap>* {
+    scroll-snap-align: start;
+    /* Align items for snapping */
+}

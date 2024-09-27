@@ -8,6 +8,7 @@ import OTPVerification from './components/auth/otpVerification';
 import ElectorsComponent from './components/home/ElectorsComponent';
 import CandidateSearch from './components/home/CandidateSearch';
 import { TextSizeProvider } from './components/common/TextSizeContext';
+import VotingPage from './components/vote/VotingPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route index element={<LandingPage />} /> {/* This sets LandingPage as the default component for "/" */}
             <Route path="ElectorsComponent" element={<ElectorsComponent />} />
             <Route path="CandidateSearch" element={<CandidateSearch />} />
+            <Route path="Vote" element={<VotingPage/>}/>
 
           </Route>
         </Routes>

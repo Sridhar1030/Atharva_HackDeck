@@ -11,6 +11,7 @@ import { TextSizeProvider } from './components/common/TextSizeContext';
 import VotingPage from './components/vote/VotingPage';
 import CandidateDetail from './components/home/CandidateDetail';
 import LocationPage from './components/Location/LocationPage';
+import AdminDashboard from './components/AdminDash/AdminDash';
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
             <Route path="CandidateSearch" element={<CandidateSearch />} />
             <Route path="/candidate/:name" element={<CandidateDetail />} />
             <Route path="Vote" element={<VotingPage />} />
-            <Route path="/location" element={<LocationPage />} /> {/* New route */}
+            <Route path="/location" element={<LocationPage />} /> 
+            <Route path="/admin" element={<AdminDashboard />} /> 
 
 
           </Route>

@@ -42,59 +42,61 @@ const CurrentIssuesPage = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto bg-purple-100 p-6 rounded-lg shadow-lg mb-4">
-            <div className="flex flex-wrap justify-between mb-4">
-                <h1 className="text-2xl font-bold w-full text-center md:text-left">Current Issues</h1>
-                <div className="flex flex-wrap justify-center md:justify-start space-x-4">
-                    <button
-                        className={`text-blue-600 hover:underline ${activeTab === 'current' ? 'font-bold' : 'text-gray-600'}`}
-                        onClick={() => handleTabClick('current')}
-                    >
-                        Current Issues
-                    </button>
-                    <button
-                        className={`text-blue-600 hover:underline ${activeTab === 'press' ? 'font-bold' : 'text-gray-600'}`}
-                        onClick={() => handleTabClick('press')}
-                    >
-                        Press Releases
-                    </button>
-                    <button
-                        className={`text-blue-600 hover:underline ${activeTab === 'instructions' ? 'font-bold' : 'text-gray-600'}`}
-                        onClick={() => handleTabClick('instructions')}
-                    >
-                        Instructions
-                    </button>
-                    <button
-                        className={`text-blue-600 hover:underline ${activeTab === 'tender' ? 'font-bold' : 'text-gray-600'}`}
-                        onClick={() => handleTabClick('tender')}
-                    >
-                        Tender & Vacancies
-                    </button>
-                    <button
-                        className={`text-blue-600 hover:underline ${activeTab === 'stories' ? 'font-bold' : 'text-gray-600'}`}
-                        onClick={() => handleTabClick('stories')}
-                    >
-                        Election Stories
+        <div className=''>
+            <div className="max-w-4xl mx-auto bg-purple-100 p-6 rounded-lg shadow-lg mb-4">
+                <div className="flex flex-wrap justify-between mb-4">
+                    <h1 className="text-2xl font-bold w-full text-center md:text-left">Current Issues</h1>
+                    <div className="flex flex-wrap justify-center md:justify-start space-x-4">
+                        <button
+                            className={`text-blue-600 hover:underline ${activeTab === 'current' ? 'font-bold' : 'text-gray-600'}`}
+                            onClick={() => handleTabClick('current')}
+                        >
+                            Current Issues
+                        </button>
+                        <button
+                            className={`text-blue-600 hover:underline ${activeTab === 'press' ? 'font-bold' : 'text-gray-600'}`}
+                            onClick={() => handleTabClick('press')}
+                        >
+                            Press Releases
+                        </button>
+                        <button
+                            className={`text-blue-600 hover:underline ${activeTab === 'instructions' ? 'font-bold' : 'text-gray-600'}`}
+                            onClick={() => handleTabClick('instructions')}
+                        >
+                            Instructions
+                        </button>
+                        <button
+                            className={`text-blue-600 hover:underline ${activeTab === 'tender' ? 'font-bold' : 'text-gray-600'}`}
+                            onClick={() => handleTabClick('tender')}
+                        >
+                            Tender & Vacancies
+                        </button>
+                        <button
+                            className={`text-blue-600 hover:underline ${activeTab === 'stories' ? 'font-bold' : 'text-gray-600'}`}
+                            onClick={() => handleTabClick('stories')}
+                        >
+                            Election Stories
+                        </button>
+                    </div>
+                </div>
+
+                <div className="space-y-4">
+                    {(activeTab === 'current' ? currentIssues : pressReleases).map((issue, index) => (
+                        <div key={index} className="bg-blue-50 p-4 rounded-lg shadow-md flex items-center">
+                            <span className="text-yellow-600 text-lg mr-3">✔️</span>
+                            <div>
+                                <p className="font-semibold">{issue.title}</p>
+                                <p className="text-gray-500 text-sm">{issue.date}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="text-center mt-4">
+                    <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-600 hover:text-white">
+                        View More ➔
                     </button>
                 </div>
-            </div>
-
-            <div className="space-y-4">
-                {(activeTab === 'current' ? currentIssues : pressReleases).map((issue, index) => (
-                    <div key={index} className="bg-blue-50 p-4 rounded-lg shadow-md flex items-center">
-                        <span className="text-yellow-600 text-lg mr-3">✔️</span>
-                        <div>
-                            <p className="font-semibold">{issue.title}</p>
-                            <p className="text-gray-500 text-sm">{issue.date}</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            <div className="text-center mt-4">
-                <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-600 hover:text-white">
-                    View More ➔
-                </button>
             </div>
         </div>
     );

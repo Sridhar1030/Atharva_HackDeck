@@ -10,11 +10,13 @@ const VotingPage = () => {
     const [voted, setVoted] = useState(false);
     const [selectedParty, setSelectedParty] = useState(null);
     const [adminPassword, setAdminPassword] = useState('');
-    const [voterId, setVoterId] = useState('');
-    const navigate = useNavigate();
     const [countdown, setCountdown] = useState(10);
     const [image, setImage] = useState(null);
-    const [imageUrl, setImageUrl] = useState('');
+    const [voices, setVoices] = useState([]);
+
+    const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('user'));
+    const voterId = user.user.voterId;
 
     // Fetch all parties from the backend
     useEffect(() => {
@@ -22,15 +24,59 @@ const VotingPage = () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/party');
                 setParties(response.data);
-                setLoading(false);
             } catch (error) {
                 setError('Failed to fetch parties.');
+            } finally {
                 setLoading(false);
             }
         };
 
         fetchParties();
     }, []);
+
+    // Load speech synthesis voices
+    useEffect(() => {
+        const loadVoices = () => {
+            const synthVoices = window.speechSynthesis.getVoices();
+            if (synthVoices.length) {
+                setVoices(synthVoices);
+            }
+        };
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = loadVoices; // Reload voices when they become available
+    }, []);
+
+    // Text-to-Speech function for Hindi and English voices
+    const speakText = (texts) => {
+        const languageSettings = [
+            { lang: 'hi-IN', text: texts.hindi, fallback: 'Hindi voice not available' },
+            { lang: 'en-IN', text: texts.english, fallback: 'English voice not available' },
+        ];
+        languageSettings.forEach(({ lang, text, fallback }, index) => {
+            const speech = new SpeechSynthesisUtterance();
+            speech.text = text;
+            speech.lang = lang;
+            const selectedVoice = voices.find(v => v.lang === lang);
+            speech.voice = selectedVoice || voices[0]; // Fallback to default voice
+            speech.text = selectedVoice ? text : fallback; // Fallback text if voice not available
+            speech.rate = 1; // Speed of the speech
+            speech.pitch = 1; // Pitch of the voice
+            setTimeout(() => {
+                window.speechSynthesis.speak(speech);
+            }, index * 5000); // 5 seconds delay between each language
+        });
+    };
+
+    // Play audio and speak text when voted is true
+    useEffect(() => {
+        if (voted) {
+            const textToSpeak = {
+                hindi: `धन्यवाद। आपने ${selectedParty} को वोट दिया है।`,
+                english: `Thank you for voting. You voted for ${selectedParty}.`,
+            };
+            speakText(textToSpeak); // Read out the confirmation message in Hindi and English
+        }
+    }, [voted, selectedParty]);
 
     // Function to start the camera and capture image
     const startCamera = async () => {
@@ -49,7 +95,6 @@ const VotingPage = () => {
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
                 const imageData = canvas.toDataURL('image/png');
                 setImage(imageData);
-                setImageUrl(''); // Reset image URL before upload
                 stream.getTracks().forEach(track => track.stop());
             }, 3000); // Capture image after 3 seconds
         } catch (error) {
@@ -82,7 +127,7 @@ const VotingPage = () => {
             }, 10000);
         } catch (error) {
             alert('Failed to cast vote. Invalid admin password, voter ID, or image upload failed.');
-            console.log(error)
+            console.log(error);
         }
     };
 
@@ -90,7 +135,7 @@ const VotingPage = () => {
     useEffect(() => {
         if (voted && countdown > 0) {
             const timer = setInterval(() => {
-                setCountdown((prev) => prev - 1);
+                setCountdown(prev => prev - 1);
             }, 1000);
             return () => clearInterval(timer);
         }
@@ -120,13 +165,6 @@ const VotingPage = () => {
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center">
             <h1 className="text-4xl font-bold my-8">Vote for Your Favorite Party</h1>
-            <input
-                type="text"
-                value={voterId}
-                onChange={(e) => setVoterId(e.target.value)}
-                placeholder="Enter Voter ID"
-                className="border p-2 rounded mb-4"
-            />
             <input
                 type="password"
                 value={adminPassword}

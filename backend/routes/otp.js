@@ -18,16 +18,16 @@ const voterData = JSON.parse(readFileSync("./voterId.json", "utf-8"));
 
 // Send OTP route
 router.post("/send-otp", async (req, res) => {
-    const { voterId } = req.body;
+    const { phoneNumber } = req.body;
 
     // Find voter by VoterId
-    const voter = voterData.find((voter) => voter.VoterId === voterId);
+    // const voter = voterData.find((voter) => voter.VoterId === voterId);
+	// console.log(object)
 
-    if (!voter) {
-        return res.status(404).json({ message: "Voter not found" });
-    }
+    // if (!voter) {
+    //     return res.status(404).json({ message: "Voter not found" });
+    // }
 
-    const phoneNumber = 8421786901; // Use the voter's phone number
 
     try {
         // Send verification request using Twilio Verify API

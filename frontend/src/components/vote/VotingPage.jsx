@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { uploadImageToS3 } from './s3Config'; // Import the upload function
 
 const VotingPage = () => {
     const [parties, setParties] = useState([]);
@@ -8,9 +9,12 @@ const VotingPage = () => {
     const [error, setError] = useState('');
     const [voted, setVoted] = useState(false);
     const [selectedParty, setSelectedParty] = useState(null);
+    const [adminPassword, setAdminPassword] = useState('');
+    const [voterId, setVoterId] = useState('');
     const navigate = useNavigate();
     const [countdown, setCountdown] = useState(10);
-    const [voices, setVoices] = useState([]);
+    const [image, setImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState('');
 
     // Fetch all parties from the backend
     useEffect(() => {
@@ -28,65 +32,48 @@ const VotingPage = () => {
         fetchParties();
     }, []);
 
-    // Ensure voices are loaded
-    useEffect(() => {
-        const loadVoices = () => {
-            const synthVoices = window.speechSynthesis.getVoices();
-            if (synthVoices.length) {
-                setVoices(synthVoices);
-            }
-        };
+    // Function to start the camera and capture image
+    const startCamera = async () => {
+        try {
+            const video = document.createElement('video');
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            video.play();
 
-        loadVoices(); // Try loading voices immediately
-        window.speechSynthesis.onvoiceschanged = loadVoices; // Reload voices when they become available
-    }, []);
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 640; // Set canvas width
+            canvas.height = 480; // Set canvas height
 
-    // Text-to-Speech function for Hindi and English voices
-    const speakText = (texts) => {
-        const languageSettings = [
-            { lang: 'hi-IN', text: texts.hindi, fallback: 'Hindi voice not available' },
-            { lang: 'en-IN', text: texts.english, fallback: 'English voice not available' },
-        ];
-
-        languageSettings.forEach(({ lang, text, fallback }, index) => {
-            const speech = new SpeechSynthesisUtterance();
-            speech.text = text;
-            speech.lang = lang;
-
-            // Find the appropriate voice for the language
-            const selectedVoice = voices.find(v => v.lang === lang);
-            if (selectedVoice) {
-                speech.voice = selectedVoice;
-            } else {
-                speech.voice = voices[0]; // Fallback to default voice
-                speech.text = fallback; // Fallback text if voice not available
-            }
-
-            speech.rate = 1; // Speed of the speech
-            speech.pitch = 1; // Pitch of the voice
-
-            // Delay speaking based on the index (so the languages speak one after the other)
             setTimeout(() => {
-                window.speechSynthesis.speak(speech);
-            }, index * 5000); // 5 seconds delay between each language
-        });
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = canvas.toDataURL('image/png');
+                setImage(imageData);
+                setImageUrl(''); // Reset image URL before upload
+                stream.getTracks().forEach(track => track.stop());
+            }, 3000); // Capture image after 3 seconds
+        } catch (error) {
+            console.error('Error accessing the camera:', error);
+            setError('Could not access the camera. Please check your device settings.');
+        }
     };
 
-    // Play audio and speak text when voted is true
-    useEffect(() => {
-        if (voted) {
-            const textToSpeak = {
-                hindi: `धन्यवाद। आपने ${selectedParty} को वोट दिया है।`,
-                english: `Thank you for voting. You voted for ${selectedParty}.`,
-            };
-            speakText(textToSpeak); // Read out the confirmation message in Hindi and English
-        }
-    }, [voted, selectedParty]);
-
-    // Function to cast a vote
+    // Function to upload image and cast a vote
     const voteForParty = async (partyId, partyName) => {
+        if (!adminPassword || !voterId || !image) {
+            alert('Please provide admin password, voter ID, and capture an image.');
+            return;
+        }
+
         try {
-            await axios.post(`http://localhost:8000/api/party/vote/${partyId}`);
+            const uploadedImageUrl = await uploadImageToS3(image); // Upload image to S3
+            const payload = {
+                password: adminPassword,
+                voterId: voterId,
+                image: uploadedImageUrl, // Use the uploaded image URL
+            };
+
+            await axios.post(`http://localhost:8000/api/party/vote/${partyId}`, payload);
             setSelectedParty(partyName);
             setVoted(true);
 
@@ -94,7 +81,8 @@ const VotingPage = () => {
                 navigate('/'); // Navigate to the homepage after 10 seconds
             }, 10000);
         } catch (error) {
-            alert('Failed to cast vote.');
+            alert('Failed to cast vote. Invalid admin password, voter ID, or image upload failed.');
+            console.log(error)
         }
     };
 
@@ -132,6 +120,24 @@ const VotingPage = () => {
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center">
             <h1 className="text-4xl font-bold my-8">Vote for Your Favorite Party</h1>
+            <input
+                type="text"
+                value={voterId}
+                onChange={(e) => setVoterId(e.target.value)}
+                placeholder="Enter Voter ID"
+                className="border p-2 rounded mb-4"
+            />
+            <input
+                type="password"
+                value={adminPassword}
+                onChange={(e) => setAdminPassword(e.target.value)}
+                placeholder="Enter Admin Password"
+                className="border p-2 rounded mb-4"
+            />
+            <button onClick={startCamera} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4">
+                Capture Image
+            </button>
+            {image && <img src={image} alt="Captured" className="mb-4" />}
             <ul className="w-full max-w-2xl">
                 {parties.map((party) => (
                     <li key={party._id} className="bg-white shadow-md rounded-lg p-6 mb-6 text-center">

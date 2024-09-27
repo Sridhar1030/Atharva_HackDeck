@@ -245,23 +245,23 @@
 		}
 	},
 	{
-		"name": "Sarika Ganesh Bhosale",
+		"name": "Sangini Sridhar Pillai",
 		"gender": "Female",
 		"husbands_name": "Ganesh Bhosale",
 		"age": 22,
 		"VoterId": "WEH1018259",
 		"phoneNumber": "8421786902",
 		"location": {
-			"city": "Kandivali",
-			"latitude": 19.2024,
-			"longitude": 72.8363
+			"city": "Mira Road",
+			"latitude": 19.2856,
+			"longitude": 19.2856
 		}
 	},
 	{
 		"name": "Sridhar Sunil Pillai",
-		"gender": "Male",
-		"VoterId": "WEH3452179",
-		"phoneNumber": "8421786901",
+		"gender": "Female",
+		"VoterId": "WEH3452169",
+		"phoneNumber": "8766432949",
 		"location": {
 			"city": "Virar",
 			"latitude": 19.4564,

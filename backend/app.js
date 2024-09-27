@@ -7,7 +7,6 @@ import OtpRouter from "./routes/otp.js";
 import adminRoutes from "./routes/admin.route.js";
 import partyRoutes from "./routes/party.routes.js";
 import { userRouter } from "./routes/user.routes.js";
-import bodyParser from 'body-parser';
 
 
 dotenv.config(); // Load environment variables from .env
@@ -23,8 +22,7 @@ app.use(
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(bodyParser.json({ limit: '10mb' })); // Adjust the limit as needed
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
 
 const voterIdPath = path.join(process.cwd(), "voterId.json");
 let voterId = [];

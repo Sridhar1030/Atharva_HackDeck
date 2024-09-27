@@ -10,10 +10,10 @@ dotenv.config(); // Load environment variables from .env
 const app = express();
 
 app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-  })
+	cors({
+		origin: process.env.CORS_ORIGIN,
+		credentials: true,
+	})
 );
 
 app.use(express.urlencoded({ extended: true }));
@@ -24,16 +24,16 @@ let voterId = [];
 
 // Read voter data from JSON file
 fs.readFile(voterIdPath, "utf8", (err, data) => {
-  if (err) {
-    console.error("Error reading voter ID file:", err);
-    return;
-  }
-  voterId = JSON.parse(data).VoterId;
+	if (err) {
+		console.error("Error reading voter ID file:", err);
+		return;
+	}
+	voterId = JSON.parse(data).VoterId;
 });
 
 app.use((req, res, next) => {
-  req.voterId = voterId;
-  next();
+	req.voterId = voterId;
+	next();
 });
 
 // Use the OTP router for /api/otp routes

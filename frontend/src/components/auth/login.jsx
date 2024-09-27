@@ -48,7 +48,7 @@ const Login = () => {
         const user = JSON.parse(localStorage.getItem('user'));
         console.log("Phone number:", user.user.phoneNumber);
         try {
-            const response = await axios.post('http://localhost:8000/api/otp/send-otp', { phoneNumber: "8421786901" });
+            const response = await axios.post('http://localhost:8000/api/otp/send-otp', { phoneNumber: "8766432949" });
             console.log("Response:", response.data);
             
             toast.success('OTP sent successfully!'); // Show success toast

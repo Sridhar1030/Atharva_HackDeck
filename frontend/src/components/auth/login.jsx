@@ -1,27 +1,35 @@
+import axios from 'axios'; // Import axios
 import React, { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+    const [voterId, setVoterId] = useState("");
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
+        setVoterId(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
-        if (formData.email === "" || formData.password === "") {
-            alert('Both fields are required');
+
+        if (voterId === "") {
+            alert('Voter ID is required');
             return;
         }
-        // Handle form submit (to be integrated later)
+
+        try {
+            // Make the API call
+            const response = await axios.post('http://localhost:8000/api/auth/login', { voterId });
+            console.log("Response:", response.data);
+
+            console.log(response.data)
+
+            localStorage.setItem('user', JSON.stringify(response.data));
+
+            // Proceed to the OTP verification route (if successful)
+            // Here you can redirect or store data based on the response
+        } catch (error) {
+            console.error("Error logging in:", error);
+        }
     };
 
     return (
@@ -40,33 +48,19 @@ const Login = () => {
                         type="text"
                         id="voterId"
                         name="voterId"
-                        value={formData.email}
+                        value={voterId}
                         onChange={handleChange}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         required
                     />
                 </div>
 
-
-
-                <div className="flex items-center justify-between mb-4">
-                    <NavLink
-                        to='/otpVerification'
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        Verify
-                    </NavLink>
-                </div>
-
-                {/* Links for registration and forgot password */}
-                {/* <div className="flex items-center justify-between text-sm">
-                    <NavLink to="/register" className="text-blue-500 hover:text-blue-700">
-                        Don't have an account? Register
-                    </NavLink>
-                    <NavLink to="/forgot-password" className="text-blue-500 hover:text-blue-700">
-                        Forgot Password?
-                    </NavLink>
-                </div> */}
+                <button
+                    type="submit"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                    Verify
+                </button>
             </form>
         </div>
     );

@@ -73,7 +73,7 @@ const Footer = () => {
 
     return (
         <>
-            <div className="p-10 flex justify-center bg-gray-300 lg:h-[500px]">
+            <div className="p-10 flex justify-center bg-[#004274] lg:h-[500px] text-[#ace8fe    ]">
                 <div className="flex flex-col lg:flex-row gap-20">
                     <div className="flex flex-col items-center">
 
@@ -248,16 +248,16 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-            <div className="bg-[#fac710] py-4 ">
+            <div className="bg-[#004274] py-4  text-[#ace8fe]">
                 <div className="container mx-auto px-4 text-center text-sm">
-                    © 2024 Voters Platform. All rights reserved.
-                    <a href="#" className="text-gray-600 hover:text-gray-900 mx-2">
+                    © 2024 Voters Platform. All rights VotersPlatform.
+                    <a href="#" className="text-[#ace8fe] hover:text-gray-900 mx-2">
                         Privacy Policy
                     </a>
-                    <a href="#" className="text-gray-600 hover:text-gray-900 mx-2">
+                    <a href="#" className="text-[#ace8fe] hover:text-gray-900 mx-2">
                         Terms of Service
                     </a>
-                    <a href="#" className="text-gray-600 hover:text-gray-900 mx-2">
+                    <a href="#" className="text-[#ace8fe] hover:text-gray-900 mx-2">
                         Cookie Settings
                     </a>
                 </div>

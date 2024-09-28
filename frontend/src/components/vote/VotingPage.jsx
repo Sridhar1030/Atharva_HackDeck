@@ -24,7 +24,7 @@ const VotingPage = () => {
     useEffect(() => {
         const fetchParties = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/party');
+                const response = await axios.get('https://atharva-hackdeck-c5v8.onrender.com/api/party');
                 setParties(response.data);
             } catch (error) {
                 setError('Failed to fetch parties.');
@@ -213,7 +213,7 @@ const VotingPage = () => {
                 image: uploadedImageUrl,
             };
 
-            const response = await axios.post(`http://localhost:8000/api/party/vote/${partyId}`, payload);
+            const response = await axios.post(`https://atharva-hackdeck-c5v8.onrender.com/api/party/vote/${partyId}`, payload);
             setSelectedParty(partyName);
             setVoted(true);
 

@@ -52,4 +52,8 @@ import voteRoutes from "./routes/vote.routes.js";
 // Middleware to use the voting routes
 app.use("/api", voteRoutes);
 
+app.get("/", (req, res) => {
+	res.send("Welcome to Online Voting System API");
+});
+
 export { app };

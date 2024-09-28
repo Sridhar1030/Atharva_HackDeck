@@ -6,23 +6,23 @@ const ElectorsComponent = () => {
             {/* Header Section */}
             <div className="text-center py-8 px-4">
                 <h1 className="text-4xl font-bold mb-2">Electors</h1>
-                <p className="text-xl text-gray-600">Home / Electors</p>
+                <p className="text-xl text-gray-600">Rights and Information for Voters</p>
             </div>
 
             {/* Images Section */}
-            <div className="flex flex-wrap justify-center space-x-4 mb-8">
+            <div className="flex flex-wrap justify-center space-x-4 mb-8 shadow-lg gap-3">
                 <img
-                    src="https://images.unsplash.com/photo-1526374106689-3e940e3b6f6e"
+                    src="https://sc0.blr1.cdn.digitaloceanspaces.com/article/118273-tjkmpuivqa-1556123685.jpg"
                     alt="Disabled Voter"
                     className="w-full sm:w-1/3 h-auto object-cover rounded-lg shadow-md mb-4 sm:mb-0"
                 />
                 <img
-                    src="https://images.unsplash.com/photo-1516109112080-07f26ec38b55"
+                    src="https://www.disability.state.mn.us/wp-content/uploads/2023/11/vote-photo_CROP.jpg"
                     alt="Accessible Voting"
                     className="w-full sm:w-1/3 h-auto object-cover rounded-lg shadow-md mb-4 sm:mb-0"
                 />
                 <img
-                    src="https://images.unsplash.com/photo-1607632569207-8d6d69f84836"
+                    src="https://images.indianexpress.com/2024/04/voting-1600.jpg"
                     alt="Voting Process for Disabled"
                     className="w-full sm:w-1/3 h-auto object-cover rounded-lg shadow-md"
                 />

@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const VoterDetailPage = () => {
-    // Sample user data
-    const userDetails = {
-        name: "John Doe",
-        age: 28,
-        address: "123 Main Street, Cityville",
-        voterId: "VOTER123456",
-    };
+    // State to hold user details from localStorage
+    const [userDetails, setUserDetails] = useState(null);
+
+    // Fetch user details from localStorage when the component mounts
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        if (storedUser) {
+            setUserDetails({
+                name: storedUser.user.fullName,
+                age: storedUser.user.age || 'N/A', // Assuming there's no age field in stored data
+                address: storedUser.user.location[0]?.city || 'Unknown Address',
+                voterId: storedUser.user.voterId,
+            });
+        }
+    }, []);
+
+    if (!userDetails) {
+        return <div>Loading...</div>; // Handle loading state
+    }
 
     return (
         <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-[#ace8fe] to-[#004274] p-8">

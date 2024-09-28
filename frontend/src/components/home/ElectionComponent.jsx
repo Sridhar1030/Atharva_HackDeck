@@ -53,9 +53,9 @@ const ElectionComponent = () => {
             <h1 className="text-center text-3xl font-bold my-6  ">Voting Portal of India For Disabled and Aged</h1>
 
             {/* Carousel */}
-            <div className=" max-w-7xl mx-auto  mb-6 ">
+            <div className=" max-w-7xl mx-auto  mb-6 h-96 mt-20 ">
                 <Slider {...settings}>
-                    <div className="sxs:h-96 md:h-96  w-full flex items-center justify-center">  {/* Increased height */}
+                    <div className="sxs:h-96 md:h-96  flex  items-center justify-center">  {/* Increased height */}
                         <img
                             src={first}
                             width={1000}
@@ -64,14 +64,14 @@ const ElectionComponent = () => {
                             className="w-full h-full object-cover"
                         />
                     </div>
-                    <div className="sxs:h-96 md:h-1500 w-full flex items-center justify-center">  {/* Increased height */}
+                    <div className="sxs:h-96 object-top w-fit md:h-1500  flex items-center justify-center">  {/* Increased height */}
                         <img
                             src={second}
 
                             width={1000}
                             height={1500}
                             alt="Slide 2"
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-top"
                         />
                     </div>
                     <div className="sxs:h-96 md:h-1500 w-full flex items-center justify-center">  {/* Increased height */}
@@ -81,7 +81,7 @@ const ElectionComponent = () => {
                             width={1000}
                             height={1500}
                             alt="Slide 3"
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover "
                         />
                     </div>
                     <div className="sxs:h-96 md:h-1500 w-full flex items-center justify-center">  {/* Increased height */}

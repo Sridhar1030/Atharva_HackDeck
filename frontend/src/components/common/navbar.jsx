@@ -5,16 +5,15 @@ import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 const menuItems = [
-    { name: 'Home', href: '#' },
-    { name: 'About', href: '#' },
-    { name: 'Contact', href: '#' },
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/aboutus' },
     {
         name: 'Features',
         dropdown: true,
         links: [
-            { name: 'Link 1', href: '#link1' },
-            { name: 'Link 2', href: '#link2' },
-            { name: 'Link 3', href: '#link3' }
+            { name: 'Link 1', href: '/ElectorsComponent' },
+            { name: 'Link 2', href: '/CandidateSearch' },
+            { name: 'Link 3', href: '/VoterEducation' }
         ]
     }
 ]
@@ -76,7 +75,7 @@ function Navbar() {
                                 {item.dropdown ? (
                                     <>
                                         <button
-                                            className="inline-flex items-center text-sm font-semibold hover:text-gray-900"
+                                            className="inline-flex items-center text-sm font-semibold hover:text-gray-900 "
                                             onClick={toggleDropdown}
                                         >
                                             {item.name}
@@ -88,7 +87,7 @@ function Navbar() {
                                                     <li key={link.name}>
                                                         <a
                                                             href={link.href}
-                                                            className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100"
+                                                            className="block px-4 py-2 text-sm border border-red-400 text-gray-800 hover:bg-gray-100 z-20"
                                                         >
                                                             {link.name}
                                                         </a>

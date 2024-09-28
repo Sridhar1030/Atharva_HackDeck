@@ -278,7 +278,7 @@ const VotingPage = () => {
                         <option value="hi-IN">Hindi</option>
                     </select>
 
-                    <button onClick={startCamera} className="bg-blue-500 text-white py-2 px-4 rounded mb-4">
+                    <button onClick={startCamera} className="bg-[#004274] text-white py-2 px-4 rounded mb-4">
                         Capture Image
                     </button>
 

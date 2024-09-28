@@ -42,9 +42,6 @@ function App() {
             <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
             <Route path="/result" element={<ProtectedRoute element={<ResultsPage />} />} />
 
-
-
-
             <Route path="voterdetail" element={<VoterDetailPage />} />
           </Route>
         </Routes>

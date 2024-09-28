@@ -132,6 +132,8 @@ const faqsMarathi = [
 const Faq = () => {
     const [openIndex, setOpenIndex] = useState(null);
     const [language, setLanguage] = useState('english');
+    const [fontSize, setFontSize] = useState(16); // State for font size
+
 
     const toggleFaq = (index) => {
         setOpenIndex(openIndex === index ? null : index);
@@ -145,6 +147,13 @@ const Faq = () => {
         } else {
             return faqs[index];
         }
+    };
+    const increaseFontSize = () => {
+        setFontSize(prevSize => prevSize + 2); // Increase font size by 2
+    };
+
+    const decreaseFontSize = () => {
+        setFontSize(prevSize => Math.max(prevSize - 2, 12)); // Decrease font size by 2, minimum 12
     };
 
     const titleTranslation = {
@@ -162,48 +171,42 @@ const Faq = () => {
     return (
         <div className="bg-[#FFFCFA]">
             <div className="py-8 px-8 md:px-32">
-                <div className="text-[36px] md:text-[48px] font-bold text-[#004274]">
+                <div className="text-[36px] md:text-[48px] font-bold text-[#004274]" style={{ fontSize: `${fontSize}px` }}>
                     {titleTranslation[language]}
                 </div>
-                <div className="text-[16px] md:text-[18px] mb-8">
+                <div className="text-[16px] md:text-[18px] mb-8" style={{ fontSize: `${fontSize}px` }}>
                     {descriptionTranslation[language]}
                 </div>
-                {/* <div className="mb-4">
-                    <button onClick={() => setLanguage('english')} className="mr-2">English</button>
-                    <button onClick={() => setLanguage('hindi')} className="mr-2">हिंदी</button>
-                    <button onClick={() => setLanguage('marathi')} className="mr-2">मराठी</button>
-                </div> */}
-                {/* <div className="mb-4">
-                    <label htmlFor="language" className="block text-sm font-medium text-gray-700 mb-2">Select Language:</label>
-                    <select
-                        id="language"
-                        onChange={(e) => setLanguage(e.target.value)}
-                        className="block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
+                <div className="mb-4 flex space-x-2">
+                    <button
+                        onClick={increaseFontSize}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
                     >
-                        <option value="english">English</option>
-                        <option value="hindi">हिंदी</option>
-                        <option value="marathi">मराठी</option>
-                    </select>
-                </div> */}
+                        +
+                    </button>
+                    <button
+                        onClick={decreaseFontSize}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                    >
+                        −
+                    </button>
+                </div>
                 <div className="mb-4 flex space-x-2">
                     <button
                         onClick={() => setLanguage('english')}
-                        className={`px-4 py-2 rounded-md transition duration-200 focus:outline-none focus:ring ${language === 'english' ? 'bg-[#00395d] text-[#ace8fe]' : 'bg-[#004274] text-[#ace8fe] hover:bg-[#00395d]'
-                            }`}
+                        className={`px-4 py-2 rounded-md transition duration-200 focus:outline-none focus:ring ${language === 'english' ? 'bg-[#00395d] text-[#ace8fe]' : 'bg-[#004274] text-[#ace8fe] hover:bg-[#00395d]'}`}
                     >
                         English
                     </button>
                     <button
                         onClick={() => setLanguage('hindi')}
-                        className={`px-4 py-2 rounded-md transition duration-200 focus:outline-none focus:ring ${language === 'hindi' ? 'bg-[#00395d] text-[#ace8fe]' : 'bg-[#004274] text-[#ace8fe] hover:bg-[#00395d]'
-                            }`}
+                        className={`px-4 py-2 rounded-md transition duration-200 focus:outline-none focus:ring ${language === 'hindi' ? 'bg-[#00395d] text-[#ace8fe]' : 'bg-[#004274] text-[#ace8fe] hover:bg-[#00395d]'}`}
                     >
                         हिंदी
                     </button>
                     <button
                         onClick={() => setLanguage('marathi')}
-                        className={`px-4 py-2 rounded-md transition duration-200 focus:outline-none focus:ring ${language === 'marathi' ? 'bg-[#00395d] text-[#ace8fe]' : 'bg-[#004274] text-[#ace8fe] hover:bg-[#00395d]'
-                            }`}
+                        className={`px-4 py-2 rounded-md transition duration-200 focus:outline-none focus:ring ${language === 'marathi' ? 'bg-[#00395d] text-[#ace8fe]' : 'bg-[#004274] text-[#ace8fe] hover:bg-[#00395d]'}`}
                     >
                         मराठी
                     </button>
@@ -218,7 +221,7 @@ const Faq = () => {
                                     className="flex justify-between items-center cursor-pointer"
                                     onClick={() => toggleFaq(index)}
                                 >
-                                    <div className="font-bold">
+                                    <div className="font-bold" style={{ fontSize: `${fontSize}px` }}>
                                         {translation.question}
                                     </div>
                                     <span className="text-gray-600">
@@ -252,7 +255,7 @@ const Faq = () => {
                                     </span>
                                 </div>
                                 {openIndex === index && (
-                                    <div className="mt-2">
+                                    <div className="mt-2" style={{ fontSize: `${fontSize}px` }}>
                                         {translation.answer}
                                     </div>
                                 )}

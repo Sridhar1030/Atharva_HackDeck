@@ -31,6 +31,10 @@ export const registerParty = async (req, res) => {
 export const voteForParty = async (req, res) => {
 	const { partyId } = req.params;
 	const { adminPassword, voterId, image } = req.body;
+	console.log('Received password:', adminPassword);
+    console.log('Received voterId:', voterId);
+    console.log('Received image:', image);
+
 
 	try {
 		// Find the party by ID

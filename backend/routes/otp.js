@@ -15,8 +15,12 @@ const client = twilio(
     process.env.TWILIO_AUTH_TOKEN
 );
 
-// Load the voter data from JSON file
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
+// Now you can construct the path to your JSON file
 const filePath = path.join(__dirname, '../VoterId.json');
+
+// Read the file
 const voterData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
 // Send OTP route

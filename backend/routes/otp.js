@@ -14,7 +14,7 @@ const client = twilio(
 );
 
 // Load the voter data from JSON file
-const voterData = JSON.parse(readFileSync("../voterId.json", "utf-8"));
+const voterData = JSON.parse(readFileSync("../VoterId.json", "utf-8"));
 
 // Send OTP route
 router.post("/send-otp", async (req, res) => {

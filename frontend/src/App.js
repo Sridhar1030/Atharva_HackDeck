@@ -15,6 +15,7 @@ import AdminDashboard from './components/AdminDash/AdminDash';
 
 import VoterEducation from './components/home/VoterEducation';
 import ResultsPage from './components/Results/Results';
+import AboutUs from './components/common/AboutUs';
 
 function App() {
   return (
@@ -32,9 +33,10 @@ function App() {
             <Route path="/candidate/:name" element={<CandidateDetail />} />
             <Route path="/votereducation" element={<VoterEducation />} />
             <Route path="Vote" element={<VotingPage />} />
-            <Route path="/location" element={<LocationPage />} /> 
-            <Route path="/admin" element={<AdminDashboard />} /> 
-            <Route path = "/result" element={<ResultsPage/>}/>
+            <Route path="/location" element={<LocationPage />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/result" element={<ResultsPage />} />
+            <Route path="/aboutus" element={<AboutUs />} />
 
 
           </Route>

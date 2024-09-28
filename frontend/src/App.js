@@ -16,6 +16,7 @@ import VoterEducation from './components/home/VoterEducation';
 import ResultsPage from './components/Results/Results';
 import ProtectedRoute from './components/ProtectedRoute';
 import AboutUs from './components/common/AboutUs';
+import VoterDetailPage from './components/vote/VoterDetailPage';
 
 function App() {
   return (
@@ -40,6 +41,11 @@ function App() {
             <Route path="/location" element={<ProtectedRoute element={<LocationPage />} />} />
             <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
             <Route path="/result" element={<ProtectedRoute element={<ResultsPage />} />} />
+
+
+
+
+            <Route path="voterdetail" element={<VoterDetailPage />} />
           </Route>
         </Routes>
       </TextSizeProvider>

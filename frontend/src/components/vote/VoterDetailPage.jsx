@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const VoterDetailPage = () => {
     // Sample user data
@@ -24,14 +25,14 @@ const VoterDetailPage = () => {
 
             {/* Actions Card */}
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-                <h2 className="text-3xl font-semibold mb-4 text-gray-800">Actions</h2>
+                <h2 className="text-3xl font-semibold mb-4 text-gray-800">Features</h2>
                 <div className="flex justify-around">
-                    <button className="bg-[#004274] text-white px-4 py-2 rounded-lg hover:bg-[#00315b] transition duration-200">
-                        Update Details
-                    </button>
-                    <button className="bg-[#004274] text-white px-4 py-2 rounded-lg hover:bg-[#00315b] transition duration-200">
-                        View Voting History
-                    </button>
+                    <NavLink to={"/location"} className="bg-[#004274] text-white px-4 py-2 rounded-lg hover:bg-[#00315b] transition duration-200">
+                        Find your Polling Station
+                    </NavLink>
+                    <NavLink to={"/Vote"} className="bg-[#004274] text-white px-4 py-2 rounded-lg hover:bg-[#00315b] transition duration-200">
+                        Vote
+                    </NavLink>
                 </div>
             </div>
         </div>

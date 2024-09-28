@@ -15,6 +15,7 @@ import AdminDashboard from './components/AdminDash/AdminDash';
 import VoterEducation from './components/home/VoterEducation';
 import ResultsPage from './components/Results/Results';
 import ProtectedRoute from './components/ProtectedRoute';
+import AboutUs from './components/common/AboutUs';
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
             <Route path="/CandidateSearch" element={<CandidateSearch />} />
             <Route path="/candidate/:name" element={<CandidateDetail />} />
             <Route path="/votereducation" element={<VoterEducation />} />
+            <Route path="/aboutus" element={<AboutUs />} />
+
 
             {/* Protecting routes that require user authentication */}
             <Route path="/Vote" element={<ProtectedRoute element={<VotingPage />} />} />

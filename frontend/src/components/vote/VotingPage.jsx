@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { uploadImageToS3 } from "./s3Config"; // Import the upload function
-import { toast } from "react-toastify";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { uploadImageToS3 } from './s3Config'; // Assuming the function exists to handle S3 upload\
+import { toast } from 'react-toastify';
 
 const VotingPage = () => {
     const [parties, setParties] = useState([]);
@@ -39,6 +39,59 @@ const VotingPage = () => {
         fetchParties();
     }, []);
 
+    useEffect(() => {
+        const loadVoices = () => {
+            const synthVoices = window.speechSynthesis.getVoices();
+            if (synthVoices.length) {
+                setVoices(synthVoices);
+            }
+        };
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+    }, []);
+
+    const speakPartyOptions = () => {
+        if (!isReadyForVoting) return; // Prevent voting before setup is complete
+
+        let utteranceQueue = parties.map((party, index) => {
+            const text = language === 'hi-IN'
+                ? `hi ${index + 1} को दबाएं ${party.name} के लिए`
+                : `Press ${index + 1} for ${party.name}`;
+            const speech = new SpeechSynthesisUtterance(text);
+            const selectedVoice = voices.find(v => v.lang === language);
+            speech.voice = selectedVoice || voices[0];
+            speech.lang = language;
+            return speech;
+        });
+
+        utteranceQueue.forEach((speech, index) => {
+            speech.onend = () => {
+                if (index === utteranceQueue.length - 1) {
+                    setHasHeardOptions(true); // Mark as heard only after the last option is spoken
+                }
+            };
+            window.speechSynthesis.speak(speech);
+        });
+    };
+
+
+    const hasVoted = async () => {
+        try {
+            const response = await axios.put(
+                `http://localhost:8000/api/auth/has-voted/${user.user._id}`
+            );
+            console.log("has vote", response.data)
+            console.log("local storage", user)
+
+            localStorage.setItem("user", JSON.stringify(response.data));
+
+            return response.data.hasVoted;
+        } catch (error) {
+            console.error("Error checking if user has voted:", error);
+            toast.error(error.response.data.message || "Error checking if user has voted");
+            return false;
+        }
+    }
 
     // Load speech synthesis voices
     useEffect(() => {
@@ -228,52 +281,55 @@ const VotingPage = () => {
         <div>
             {!user.user?.hasVoted ? (
                 <div className="min-h-screen bg-gray-100 flex flex-col items-center">
-                <h1 className="text-4xl font-bold my-8">
-                    Vote for Your Favorite Party
-                </h1>
-                <input
-                    type="password"
-                    value={adminPassword}
-                    onChange={(e) => setAdminPassword(e.target.value)}
-                    placeholder="Enter Admin Password"
-                    className="border p-2 rounded mb-4"
-                />
-                <button
-                    onClick={startCamera}
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4"
-                >
-                    Capture Image
-                </button>
-                {image && <img src={image} alt="Captured" className="mb-4" />}
-                <ul className="w-full max-w-2xl">
-                    {parties.map((party) => (
-                        <li
-                            key={party._id}
-                            className="bg-white shadow-md rounded-lg p-6 mb-6 text-center"
-                        >
-                            <h2 className="text-2xl font-semibold">{party.name}</h2>
-                            <p className="text-lg">Leader: {party.leader}</p>
-                            <p className="text-lg mb-4">
-                                Votes: {party.voteCounter}
-                            </p>
-                            <button
-                                onClick={() => voteForParty(party._id, party.name)}
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            >
-                                Vote
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+                    <h1 className="text-4xl font-bold my-8">Vote for Your Favorite Party</h1>
+
+                    <input
+                        type="password"
+                        value={adminPassword}
+                        onChange={handlePasswordInput}
+                        placeholder="Enter Admin Password"
+                        className="border p-2 rounded mb-4"
+                    />
+
+                    <select value={language} onChange={(e) => setLanguage(e.target.value)} className="border p-2 rounded mb-4">
+                        <option value="en-IN">English</option>
+                        <option value="hi-IN">Hindi</option>
+                    </select>
+
+                    <button onClick={startCamera} className="bg-blue-500 text-white py-2 px-4 rounded mb-4">
+                        Capture Image
+                    </button>
+
+                    <button
+                        onClick={speakPartyOptions}
+                        className={`bg-green-500 text-white py-2 px-4 rounded ${!isReadyForVoting && 'opacity-50 cursor-not-allowed'}`}
+                    >
+                        Hear Party Options
+                    </button>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                        {parties.map((party) => (
+                            <div key={party._id} className="bg-white p-4 rounded-lg shadow-md text-center">
+                                <h2 className="text-2xl font-semibold mb-2">{party.name}</h2>
+                                <button
+                                    onClick={() => voteForParty(party._id, party.name)}
+                                    className={`bg-green-600 text-white py-2 px-4 rounded ${!isReadyForVoting && 'opacity-50 cursor-not-allowed'}`}
+                                    disabled={!isReadyForVoting || (!hasHeardOptions && !isReadyForVoting)}
+                                >
+                                    Vote for {party.name}
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             ) : (
-                <div className="text-center">
-                    <h1 className="text-2xl font-bold mt-8">User has already voted</h1>
+                <div className="min-h-screen flex flex-col items-center justify-center">
+                    <h1 className="text-4xl font-bold my-8">You have already voted!</h1>
                 </div>
             )}
         </div>
     );
-    
+
 };
 
 export default VotingPage;

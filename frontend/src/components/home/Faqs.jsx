@@ -168,11 +168,47 @@ const Faq = () => {
                 <div className="text-[16px] md:text-[18px] mb-8">
                     {descriptionTranslation[language]}
                 </div>
-                <div className="mb-4">
+                {/* <div className="mb-4">
                     <button onClick={() => setLanguage('english')} className="mr-2">English</button>
                     <button onClick={() => setLanguage('hindi')} className="mr-2">हिंदी</button>
                     <button onClick={() => setLanguage('marathi')} className="mr-2">मराठी</button>
+                </div> */}
+                {/* <div className="mb-4">
+                    <label htmlFor="language" className="block text-sm font-medium text-gray-700 mb-2">Select Language:</label>
+                    <select
+                        id="language"
+                        onChange={(e) => setLanguage(e.target.value)}
+                        className="block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
+                    >
+                        <option value="english">English</option>
+                        <option value="hindi">हिंदी</option>
+                        <option value="marathi">मराठी</option>
+                    </select>
+                </div> */}
+                <div className="mb-4 flex space-x-2">
+                    <button
+                        onClick={() => setLanguage('english')}
+                        className={`px-4 py-2 rounded-md transition duration-200 focus:outline-none focus:ring ${language === 'english' ? 'bg-[#00395d] text-[#ace8fe]' : 'bg-[#004274] text-[#ace8fe] hover:bg-[#00395d]'
+                            }`}
+                    >
+                        English
+                    </button>
+                    <button
+                        onClick={() => setLanguage('hindi')}
+                        className={`px-4 py-2 rounded-md transition duration-200 focus:outline-none focus:ring ${language === 'hindi' ? 'bg-[#00395d] text-[#ace8fe]' : 'bg-[#004274] text-[#ace8fe] hover:bg-[#00395d]'
+                            }`}
+                    >
+                        हिंदी
+                    </button>
+                    <button
+                        onClick={() => setLanguage('marathi')}
+                        className={`px-4 py-2 rounded-md transition duration-200 focus:outline-none focus:ring ${language === 'marathi' ? 'bg-[#00395d] text-[#ace8fe]' : 'bg-[#004274] text-[#ace8fe] hover:bg-[#00395d]'
+                            }`}
+                    >
+                        मराठी
+                    </button>
                 </div>
+
                 <div className="space-y-4">
                     {faqs.map((faq, index) => {
                         const translation = getTranslation(index);

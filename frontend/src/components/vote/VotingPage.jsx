@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { uploadImageToS3 } from './s3Config'; // Import the upload function
+import { uploadImageToS3 } from './s3Config'; // Assuming the function exists to handle S3 upload
 
 const VotingPage = () => {
     const [parties, setParties] = useState([]);
@@ -13,12 +13,13 @@ const VotingPage = () => {
     const [countdown, setCountdown] = useState(10);
     const [image, setImage] = useState(null);
     const [voices, setVoices] = useState([]);
-
+    const [language, setLanguage] = useState('en-IN');
+    const [isReadyForVoting, setIsReadyForVoting] = useState(false);
+    const [hasHeardOptions, setHasHeardOptions] = useState(false); // New state to track if options were heard
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user'));
     const voterId = user.user.voterId;
 
-    // Fetch all parties from the backend
     useEffect(() => {
         const fetchParties = async () => {
             try {
@@ -33,6 +34,44 @@ const VotingPage = () => {
 
         fetchParties();
     }, []);
+
+    useEffect(() => {
+        const loadVoices = () => {
+            const synthVoices = window.speechSynthesis.getVoices();
+            if (synthVoices.length) {
+                setVoices(synthVoices);
+            }
+        };
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+    }, []);
+
+    const speakPartyOptions = () => {
+        if (!isReadyForVoting) return; // Prevent voting before setup is complete
+
+        let utteranceQueue = parties.map((party, index) => {
+            const text = language === 'hi-IN'
+                ? `hi ${index + 1} को दबाएं ${party.name} के लिए`
+                : `Press ${index + 1} for ${party.name}`;
+            const speech = new SpeechSynthesisUtterance(text);
+            const selectedVoice = voices.find(v => v.lang === language);
+            speech.voice = selectedVoice || voices[0];
+            speech.lang = language;
+            return speech;
+        });
+
+        utteranceQueue.forEach((speech, index) => {
+            speech.onend = () => {
+                if (index === utteranceQueue.length - 1) {
+                    setHasHeardOptions(true); // Mark as heard only after the last option is spoken
+                }
+            };
+            window.speechSynthesis.speak(speech);
+        });
+    };
+
+
+
 
     // Load speech synthesis voices
     useEffect(() => {
@@ -49,21 +88,37 @@ const VotingPage = () => {
     // Text-to-Speech function for Hindi and English voices
     const speakText = (texts) => {
         const languageSettings = [
-            { lang: 'hi-IN', text: texts.hindi, fallback: 'Hindi voice not available' },
-            { lang: 'en-IN', text: texts.english, fallback: 'English voice not available' },
+            {
+                lang: "hi-IN",
+                text: texts.hindi,
+                gender: "female",
+                fallback: "Hindi voice not available",
+            },
+            {
+                lang: "hi-IN",
+                text: texts.marathi,
+                gender: "female",
+                fallback: "Marathi voice not available",
+            },
+            {
+                lang: "en-IN",
+                text: texts.english,
+                gender: "female",
+                fallback: "English voice not available",
+            },
         ];
         languageSettings.forEach(({ lang, text, fallback }, index) => {
             const speech = new SpeechSynthesisUtterance();
             speech.text = text;
             speech.lang = lang;
-            const selectedVoice = voices.find(v => v.lang === lang);
+            const selectedVoice = voices.find((v) => v.lang === lang);
             speech.voice = selectedVoice || voices[0]; // Fallback to default voice
             speech.text = selectedVoice ? text : fallback; // Fallback text if voice not available
             speech.rate = 1; // Speed of the speech
             speech.pitch = 1; // Pitch of the voice
             setTimeout(() => {
                 window.speechSynthesis.speak(speech);
-            }, index * 5000); // 5 seconds delay between each language
+            }, index * 4000); // 5 seconds delay between each language
         });
     };
 
@@ -71,14 +126,36 @@ const VotingPage = () => {
     useEffect(() => {
         if (voted) {
             const textToSpeak = {
-                hindi: `धन्यवाद। आपने ${selectedParty} को वोट दिया है।`,
-                english: `Thank you for voting. You voted for ${selectedParty}.`,
+                hindi: `  आपने ${selectedParty} को वोट दिया है। `,
+                marathi: `  आपण ${selectedParty} ला मतदान केले आहे.`,
+                english: ` You voted for ${selectedParty}.`,
             };
-            speakText(textToSpeak); // Read out the confirmation message in Hindi and English
+            speakText(textToSpeak);
         }
     }, [voted, selectedParty]);
 
-    // Function to start the camera and capture image
+
+    useEffect(() => {
+        const handleKeyPress = (event) => {
+            if (!isReadyForVoting) return; // Prevent keypress until password and image are set
+            if (hasHeardOptions || !parties.length) {
+                const pressedKey = parseInt(event.key, 10);
+                if (pressedKey > 0 && pressedKey <= parties.length) {
+                    const selected = parties[pressedKey - 1];
+                    voteForParty(selected._id, selected.name);
+                }
+            }
+        };
+
+        if (!voted) {
+            window.addEventListener('keydown', handleKeyPress);
+        }
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [parties, voted, isReadyForVoting, hasHeardOptions]);
+
     const startCamera = async () => {
         try {
             const video = document.createElement('video');
@@ -88,22 +165,22 @@ const VotingPage = () => {
 
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
-            canvas.width = 640; // Set canvas width
-            canvas.height = 480; // Set canvas height
+            canvas.width = 640;
+            canvas.height = 480;
 
             setTimeout(() => {
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
                 const imageData = canvas.toDataURL('image/png');
                 setImage(imageData);
+                setIsReadyForVoting(true); // Enable voting after capturing image
                 stream.getTracks().forEach(track => track.stop());
-            }, 3000); // Capture image after 3 seconds
+            }, 3000);
         } catch (error) {
             console.error('Error accessing the camera:', error);
             setError('Could not access the camera. Please check your device settings.');
         }
     };
 
-    // Function to upload image and cast a vote
     const voteForParty = async (partyId, partyName) => {
         if (!adminPassword || !voterId || !image) {
             alert('Please provide admin password, voter ID, and capture an image.');
@@ -112,26 +189,26 @@ const VotingPage = () => {
 
         try {
             const uploadedImageUrl = await uploadImageToS3(image); // Upload image to S3
+
             const payload = {
-                password: adminPassword,
+                adminPassword: adminPassword,
                 voterId: voterId,
-                image: uploadedImageUrl, // Use the uploaded image URL
+                image: uploadedImageUrl,
             };
 
-            await axios.post(`http://localhost:8000/api/party/vote/${partyId}`, payload);
+            const response = await axios.post(`http://localhost:8000/api/party/vote/${partyId}`, payload);
             setSelectedParty(partyName);
             setVoted(true);
 
             setTimeout(() => {
-                navigate('/'); // Navigate to the homepage after 10 seconds
+                navigate('/');
             }, 10000);
         } catch (error) {
             alert('Failed to cast vote. Invalid admin password, voter ID, or image upload failed.');
-            console.log(error);
+            console.log('Error during vote:', error.response ? error.response.data : error.message);
         }
     };
 
-    // Countdown timer for redirecting after voting
     useEffect(() => {
         if (voted && countdown > 0) {
             const timer = setInterval(() => {
@@ -141,6 +218,10 @@ const VotingPage = () => {
         }
     }, [voted, countdown]);
 
+    const handlePasswordInput = (e) => {
+        setAdminPassword(e.target.value);
+    };
+
     if (loading) {
         return <div className="text-center text-xl">Loading parties...</div>;
     }
@@ -149,7 +230,6 @@ const VotingPage = () => {
         return <div className="text-center text-red-500">{error}</div>;
     }
 
-    // Ballot paper confirmation page after voting
     if (voted) {
         return (
             <div className="min-h-screen flex flex-col justify-center items-center bg-gray-200">
@@ -168,29 +248,34 @@ const VotingPage = () => {
             <input
                 type="password"
                 value={adminPassword}
-                onChange={(e) => setAdminPassword(e.target.value)}
+                onChange={handlePasswordInput}
                 placeholder="Enter Admin Password"
                 className="border p-2 rounded mb-4"
             />
-            <button onClick={startCamera} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4">
+            <select value={language} onChange={(e) => setLanguage(e.target.value)} className="border p-2 rounded mb-4">
+                <option value="en-IN">English</option>
+                <option value="hi-IN">Hindi</option>
+            </select>
+            <button onClick={startCamera} className="bg-blue-500 text-white py-2 px-4 rounded mb-4">
                 Capture Image
             </button>
-            {image && <img src={image} alt="Captured" className="mb-4" />}
-            <ul className="w-full max-w-2xl">
+            <button onClick={speakPartyOptions} className={`bg-green-500 text-white py-2 px-4 rounded ${!isReadyForVoting && 'opacity-50 cursor-not-allowed'}`}>
+                Hear Party Options
+            </button>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
                 {parties.map((party) => (
-                    <li key={party._id} className="bg-white shadow-md rounded-lg p-6 mb-6 text-center">
-                        <h2 className="text-2xl font-semibold">{party.name}</h2>
-                        <p className="text-lg">Leader: {party.leader}</p>
-                        <p className="text-lg mb-4">Votes: {party.voteCounter}</p>
+                    <div key={party._id} className="bg-white p-4 rounded-lg shadow-md text-center">
+                        <h2 className="text-2xl font-semibold mb-2">{party.name}</h2>
                         <button
                             onClick={() => voteForParty(party._id, party.name)}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            className={`bg-green-600 text-white py-2 px-4 rounded ${!isReadyForVoting && 'opacity-50 cursor-not-allowed'}`}
+                            disabled={!isReadyForVoting || (!hasHeardOptions && !isReadyForVoting)}
                         >
-                            Vote
+                            Vote for {party.name}
                         </button>
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

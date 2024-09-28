@@ -340,7 +340,7 @@ const CurrentIssuesPage = () => {
 
     return (
         <div className=''>
-            <div className="max-w-4xl mx-auto bg-purple-100 p-6 rounded-lg shadow-lg mb-4">
+            <div className="max-w-4xl mx-auto bg-purple-100 p-6 rounded-lg shadow-lg mb-4 mt-4">
                 <div className="flex flex-wrap justify-between mb-4">
                     <h1 className="text-2xl font-bold w-full text-center md:text-left">Current Issues</h1>
                     <div className="flex flex-wrap justify-center md:justify-start space-x-4">

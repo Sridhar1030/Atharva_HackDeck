@@ -2,6 +2,8 @@ import { Router } from "express";
 import { readFileSync } from "fs";
 import twilio from "twilio";
 import dotenv from "dotenv";
+import fs from 'fs';
+import path from 'path';
 
 dotenv.config(); // Load environment variables from .env
 
@@ -14,7 +16,8 @@ const client = twilio(
 );
 
 // Load the voter data from JSON file
-const voterData = JSON.parse(readFileSync("../VoterId.json", "utf-8"));
+const filePath = path.join(__dirname, '../VoterId.json');
+const voterData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
 // Send OTP route
 router.post("/send-otp", async (req, res) => {

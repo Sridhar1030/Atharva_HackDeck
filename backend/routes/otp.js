@@ -18,10 +18,13 @@ const client = twilio(
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 // Now you can construct the path to your JSON file
-const filePath = path.join(__dirname, '../VoterId.json');
+const filePath = 'F:/WEBDEV/Atharva_HackDeck/backend/VoterId.json'; // Adjust accordingly
 
-// Read the file
-const voterData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+console.log('Resolved file path:', filePath);
+// Attempt to read the file
+
+    const voterData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    
 
 // Send OTP route
 router.post("/send-otp", async (req, res) => {
@@ -40,7 +43,7 @@ router.post("/send-otp", async (req, res) => {
         // Send verification request using Twilio Verify API
         await client.verify.services(process.env.TWILIO_VERIFY_SERVICE_SID)
             .verifications
-            .create({ to: `+91${phoneNumber}`, channel: 'sms' });
+            .create({ to: `+919136911324`, channel: 'sms' });
 
         res.status(200).json({ message: "OTP sent successfully!" });
     } catch (error) {
@@ -66,7 +69,7 @@ router.post("/verify-otp", async (req, res) => {
         // Verify the OTP using Twilio Verify API
         const verificationCheck = await client.verify.services(process.env.TWILIO_VERIFY_SERVICE_SID)
             .verificationChecks
-            .create({ to: `+91${phoneNumber}`, code: otp });
+            .create({ to: `+919136911324`, code: otp });
 
         if (verificationCheck.status === 'approved') {
             res.status(200).json({ message: "OTP verified successfully!" });

@@ -410,7 +410,7 @@ export const candidatesData = [
         "city": "Thane",
         "suburban": "Thane",
         "id": 8,
-        "candidate_image": "https://i.ibb.co/bharat_samji_vanga.jpg",
+        "candidate_image": "",
         "party_logo": "https://i.ibb.co/JcLNLHC/bjp.png"
     },
     {

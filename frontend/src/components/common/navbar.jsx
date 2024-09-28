@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
+import Logo from '../../images/logo.png'
 
 const menuItems = [
     { name: 'Home', href: '#' },
@@ -57,16 +58,15 @@ function Navbar() {
             <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
                 <NavLink to={"/"} className="inline-flex items-center space-x-2">
                     <span>
-                        <svg
+                        <img
+                            src={Logo} // Replace with actual image URL
+                            alt="Voting Icon"
                             width="30"
                             height="30"
-                            viewBox="0 0 50 56"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {/* SVG code */}
-                        </svg>
+                            className="object-cover"
+                        />
                     </span>
+
                     <span className="font-bold">Voter's Platform</span>
                 </NavLink>
                 <div className="hidden grow items-start lg:flex text-[#ace8fe]">

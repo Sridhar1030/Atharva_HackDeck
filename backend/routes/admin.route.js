@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerAdmin } from "../controllers/admin.controller.js";
+import { registerAdmin, updateAdmin } from "../controllers/admin.controller.js";
 import Admin from '../models/admin.models.js'; // Import your Admin model
 
 
@@ -20,4 +20,6 @@ router.get("/dashboard/:adminId", async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 });
+
+router.put("/update/:adminId",updateAdmin)
 export default router;

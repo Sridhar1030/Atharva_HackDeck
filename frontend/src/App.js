@@ -12,9 +12,9 @@ import VotingPage from './components/vote/VotingPage';
 import CandidateDetail from './components/home/CandidateDetail';
 import LocationPage from './components/Location/LocationPage';
 import AdminDashboard from './components/AdminDash/AdminDash';
-
 import VoterEducation from './components/home/VoterEducation';
 import ResultsPage from './components/Results/Results';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -27,16 +27,16 @@ function App() {
           {/* Set the LandingPage as the default route for the root path */}
           <Route path="/" element={<Layout />}>
             <Route index element={<LandingPage />} /> {/* This sets LandingPage as the default component for "/" */}
-            <Route path="ElectorsComponent" element={<ElectorsComponent />} />
-            <Route path="CandidateSearch" element={<CandidateSearch />} />
+            <Route path="/ElectorsComponent" element={<ElectorsComponent />} />
+            <Route path="/CandidateSearch" element={<CandidateSearch />} />
             <Route path="/candidate/:name" element={<CandidateDetail />} />
             <Route path="/votereducation" element={<VoterEducation />} />
-            <Route path="Vote" element={<VotingPage />} />
-            <Route path="/location" element={<LocationPage />} /> 
-            <Route path="/admin" element={<AdminDashboard />} /> 
-            <Route path = "/result" element={<ResultsPage/>}/>
 
-
+            {/* Protecting routes that require user authentication */}
+            <Route path="/Vote" element={<ProtectedRoute element={<VotingPage />} />} />
+            <Route path="/location" element={<ProtectedRoute element={<LocationPage />} />} />
+            <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
+            <Route path="/result" element={<ProtectedRoute element={<ResultsPage />} />} />
           </Route>
         </Routes>
       </TextSizeProvider>

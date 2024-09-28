@@ -14,6 +14,8 @@ const Login = () => {
         setVoterId(e.target.value);
     };
 
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -24,7 +26,7 @@ const Login = () => {
 
         try {
             // Make the API call to submit the voter ID and get the masked phone number
-            const response = await axios.post('http://localhost:8000/api/auth/login', { voterId });
+            const response = await axios.post(`${backendUrl}/api/auth/login`, { voterId });
             console.log("Response:", response.data);
 
             // Assuming response contains a phone number
@@ -38,17 +40,21 @@ const Login = () => {
 
             localStorage.setItem('user', JSON.stringify(response.data)); // Store user data
 
+            localStorage.setItem('accessToken', response.data.accessToken); // Store access token
+
 
         } catch (error) {
             toast.error( error.response?.data.message ||'Login failed, please try again.'); // Show error toast
         }
     };
 
+
+
     const handleSendOtp = async () => {
         const user = JSON.parse(localStorage.getItem('user'));
         console.log("Phone number:", user.user.phoneNumber);
         try {
-            const response = await axios.post('http://localhost:8000/api/otp/send-otp', { phoneNumber: "8766432949" });
+            const response = await axios.post(`${backendUrl}/api/otp/send-otp`, { phoneNumber: "8766432949" });
             console.log("Response:", response.data);
             
             toast.success('OTP sent successfully!'); // Show success toast

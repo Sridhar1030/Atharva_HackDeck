@@ -22,9 +22,12 @@ const OTPVerification = () => {
         e.preventDefault();
     
         const user = JSON.parse(localStorage.getItem('user'));
+
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
     
         try {
-            const response = await axios.post('http://localhost:8000/api/otp/verify-otp', {
+            const response = await axios.post(`${backendUrl}/api/otp/verify-otp`, {
                 voterId: user.user?.voterId,
                 otp
             });
@@ -45,12 +48,15 @@ const OTPVerification = () => {
         }
     };
 
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+
     const handleSendOtp = async () => {
         const user = JSON.parse(localStorage.getItem('user'));
         console.log("Phone number:", user.user.phoneNumber);
         try {
 
-            const response = await axios.post('http://localhost:8000/api/otp/send-otp', { phoneNumber: "8421786901" });
+            const response = await axios.post(`${backendUrl}/api/otp/send-otp`, { phoneNumber: "8421786901" });
             console.log("Response:", response.data);
 
             // Start 60-second countdown after sending the OTP

@@ -11,9 +11,21 @@ const ElectorsComponent = () => {
 
             {/* Images Section */}
             <div className="flex flex-wrap justify-center space-x-4 mb-8">
-                <img src="path_to_first_image.jpg" alt="Voter" className="w-full sm:w-1/3 h-auto object-cover rounded-lg shadow-md mb-4 sm:mb-0" />
-                <img src="path_to_second_image.jpg" alt="Polling Station" className="w-full sm:w-1/3 h-auto object-cover rounded-lg shadow-md mb-4 sm:mb-0" />
-                <img src="path_to_third_image.jpg" alt="Voting Process" className="w-full sm:w-1/3 h-auto object-cover rounded-lg shadow-md" />
+                <img
+                    src="https://images.unsplash.com/photo-1526374106689-3e940e3b6f6e"
+                    alt="Disabled Voter"
+                    className="w-full sm:w-1/3 h-auto object-cover rounded-lg shadow-md mb-4 sm:mb-0"
+                />
+                <img
+                    src="https://images.unsplash.com/photo-1516109112080-07f26ec38b55"
+                    alt="Accessible Voting"
+                    className="w-full sm:w-1/3 h-auto object-cover rounded-lg shadow-md mb-4 sm:mb-0"
+                />
+                <img
+                    src="https://images.unsplash.com/photo-1607632569207-8d6d69f84836"
+                    alt="Voting Process for Disabled"
+                    className="w-full sm:w-1/3 h-auto object-cover rounded-lg shadow-md"
+                />
             </div>
 
             {/* Voter Information Section */}
@@ -26,6 +38,20 @@ const ElectorsComponent = () => {
                     <li className="bg-blue-100 p-2 rounded">Update your Details in Electoral Roll</li>
                     <li className="bg-blue-100 p-2 rounded">Saksham App</li>
                 </ol>
+            </div>
+
+            {/* Accessible Voting Information Section */}
+            <div className="bg-blue-200 p-8 rounded-lg mx-4 md:mx-16 mt-8">
+                <h2 className="text-3xl font-semibold mb-4">Accessible Voting Information</h2>
+                <p className="text-lg text-gray-700 mb-4">
+                    Elections are designed to be inclusive for all voters, including those with disabilities. Here are some important provisions available:
+                </p>
+                <ul className="list-disc pl-6 space-y-2">
+                    <li className="bg-blue-100 p-2 rounded">Accessible polling stations with ramps and elevators.</li>
+                    <li className="bg-blue-100 p-2 rounded">Voting machines that accommodate visual and physical disabilities.</li>
+                    <li className="bg-blue-100 p-2 rounded">Assistance from election staff is available at polling places.</li>
+                    <li className="bg-blue-100 p-2 rounded">Option to vote by mail or absentee ballot for those unable to vote in person.</li>
+                </ul>
             </div>
         </div>
     );

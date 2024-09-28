@@ -114,7 +114,7 @@ const UserLocationPage = () => {
                 <p className="text-lg font-semibold">Location: <span className="font-normal">{userLocation.location[0].city}</span></p>
                 <p className="text-lg font-semibold">Latitude: <span className="font-normal">{userLocation.location[0].latitude}</span></p>
                 <p className="text-lg font-semibold">Longitude: <span className="font-normal">{userLocation.location[0].longitude}</span></p>
-                <button onClick={handleRequestPickup} className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded transition duration-200">
+                <button onClick={handleRequestPickup} className="mt-4 bg-[#004274] hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded transition duration-200">
                     Request Pickup to Nearest Voting Booth
                 </button>
             </div>

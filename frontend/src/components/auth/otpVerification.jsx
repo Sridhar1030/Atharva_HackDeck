@@ -38,7 +38,7 @@ const OTPVerification = () => {
 
             // Redirect on successful verification
             setTimeout(() => {
-                navigate("/");  // Redirect after a short delay
+                navigate("/voterdetail");  // Redirect after a short delay
             }, 1000);  // 2 second delay
         } catch (error) {
             console.error("Error verifying OTP:", error.response?.data, error);

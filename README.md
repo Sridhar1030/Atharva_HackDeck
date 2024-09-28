@@ -49,3 +49,7 @@ To get a local copy up and running follow these simple steps:
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/Atharva_HackDeck.git
+### Implementation Video
+
+You can view the project implementation in this video link:  
+[https://drive.google.com/file/d/18US4HzzE-AAHVES3TEzN0DL19k93Tx3E/view?usp=sharing](https://drive.google.com/file/d/18US4HzzE-AAHVES3TEzN0DL19k93Tx3E/view?usp=sharing)

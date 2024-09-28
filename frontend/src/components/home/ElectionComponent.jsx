@@ -86,24 +86,19 @@ const ElectionComponent = () => {
             </div>
 
 
-            {/* Marquee Section */}
-            <div className=" bg-gray-200 py-4">
-                <marquee className="text-xl font-bold text-center text-blue-600  md:mx-0">
-                    Important Announcement: Upcoming elections for J&K Assembly! Stay tuned for updates.
-                </marquee>
-            </div>
 
             <marquee className="bg-white p-4" scrollamount="5" behavior="smooth" direction="left">
-                <div className="flex space-x-4"> {/* Removed unnecessary divs for simplicity */}
+                <div className="flex space-x-4 mt-4 "> {/* Add custom scrollbar class */}
                     {navItems.map((item, index) => (
                         <NavLink
                             key={index}
                             to={item.to}
-                            className="flex flex-col items-center mb-6 md:mb-0 w-1/4 flex-shrink-0">
-                            <div className={`${item.color} p-4 rounded-full text-white text-sm block inline text-center cursor-pointer w-full`}>
+                            className="flex flex-col items-center mb-6 md:mb-0 w-1/4 flex-shrink-0"
+                        >
+                            <div className={`${item.color} p-4 rounded-full text-white text-sm block inline text-center cursor-pointer w-full h-12 flex items-center justify-center whitespace-nowrap`}>
                                 {item.title}
                             </div>
-                            <p className="text-center mt-2">{item.description}</p>
+                            <p className="text-center mt-2 whitespace-nowrap">{item.description}</p>
                         </NavLink>
                     ))}
                 </div>

@@ -111,10 +111,12 @@ const AdminDashboard = () => {
     const [adminData, setAdminData] = useState(null);
     const [error, setError] = useState('');
 
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
     useEffect(() => {
         const fetchAdminData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/admin/dashboard/${adminId}`);
+                const response = await axios.get(`${backendUrl}/api/admin/dashboard/${adminId}`);
                 setAdminData(response.data);
             } catch (error) {
                 setError('Failed to fetch admin data.');

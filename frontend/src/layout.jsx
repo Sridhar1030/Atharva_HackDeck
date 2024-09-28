@@ -9,7 +9,7 @@ import TopBar from './components/common/TopBar'
 function layout() {
     return (
         <>
-            <TopBar />
+            {/* <TopBar /> */}
             <Navbar />
             <Outlet />
 

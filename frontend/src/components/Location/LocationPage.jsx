@@ -24,11 +24,14 @@ const UserLocationPage = () => {
         { name: "Voting Booth 10", latitude: 19.4602, longitude: 72.8447, city: "Virar" },
     ];
 
+
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
     useEffect(() => {
         const fetchUserLocation = async () => {
             try {
                 if (userId) {
-                    const response = await axios.get(`http://localhost:8000/api/auth/location/${userId}`);
+                    const response = await axios.get(`${backendUrl}/api/auth/location/${userId}`);
                     setUserLocation(response.data);
                     console.log(response.data);
                 }

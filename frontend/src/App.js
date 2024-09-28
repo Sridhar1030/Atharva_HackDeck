@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Router } from 'react-router-dom';
 import Layout from './layout';
 import LandingPage from './components/home/landingpage';
 import Login from './components/auth/login';
@@ -14,6 +14,7 @@ import LocationPage from './components/Location/LocationPage';
 import AdminDashboard from './components/AdminDash/AdminDash';
 
 import VoterEducation from './components/home/VoterEducation';
+import ResultsPage from './components/Results/Results';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="Vote" element={<VotingPage />} />
             <Route path="/location" element={<LocationPage />} /> 
             <Route path="/admin" element={<AdminDashboard />} /> 
+            <Route path = "/result" element={<ResultsPage/>}/>
 
 
           </Route>

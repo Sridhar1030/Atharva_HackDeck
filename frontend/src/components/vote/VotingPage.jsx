@@ -7,27 +7,30 @@ import { toast } from 'react-toastify';
 const VotingPage = () => {
     const [parties, setParties] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
     const [voted, setVoted] = useState(false);
     const [selectedParty, setSelectedParty] = useState(null);
-    const [adminPassword, setAdminPassword] = useState('');
+    const [adminPassword, setAdminPassword] = useState("");
     const [countdown, setCountdown] = useState(10);
     const [image, setImage] = useState(null);
     const [voices, setVoices] = useState([]);
-    const [language, setLanguage] = useState('en-IN');
-    const [isReadyForVoting, setIsReadyForVoting] = useState(false);
-    const [hasHeardOptions, setHasHeardOptions] = useState(false); // New state to track if options were heard
+
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('user'));
+    let user = JSON.parse(localStorage.getItem("user"));
     const voterId = user.user.voterId;
 
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+    // Fetch all parties from the backend
     useEffect(() => {
         const fetchParties = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/party');
+                const response = await axios.get(
+                    `${backendUrl}/api/party`
+                );
                 setParties(response.data);
             } catch (error) {
-                setError('Failed to fetch parties.');
+                setError("Failed to fetch parties.");
             } finally {
                 setLoading(false);
             }
@@ -72,23 +75,6 @@ const VotingPage = () => {
     };
 
 
-    const hasVoted = async () => {
-        try {
-            const response = await axios.put(
-                `http://localhost:8000/api/auth/has-voted/${user.user._id}`
-            );
-            console.log("has vote", response.data)
-            console.log("local storage", user)
-
-            localStorage.setItem("user", JSON.stringify(response.data));
-
-            return response.data.hasVoted;
-        } catch (error) {
-            console.error("Error checking if user has voted:", error);
-            toast.error(error.response.data.message || "Error checking if user has voted");
-            return false;
-        }
-    }
 
     // Load speech synthesis voices
     useEffect(() => {
@@ -151,93 +137,99 @@ const VotingPage = () => {
         }
     }, [voted, selectedParty]);
 
-
-    useEffect(() => {
-        const handleKeyPress = (event) => {
-            if (!isReadyForVoting) return; // Prevent keypress until password and image are set
-            if (hasHeardOptions || !parties.length) {
-                const pressedKey = parseInt(event.key, 10);
-                if (pressedKey > 0 && pressedKey <= parties.length) {
-                    const selected = parties[pressedKey - 1];
-                    voteForParty(selected._id, selected.name);
-                }
-            }
-        };
-
-        if (!voted) {
-            window.addEventListener('keydown', handleKeyPress);
-        }
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyPress);
-        };
-    }, [parties, voted, isReadyForVoting, hasHeardOptions]);
-
+    // Function to start the camera and capture image
     const startCamera = async () => {
         try {
-            const video = document.createElement('video');
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const video = document.createElement("video");
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true,
+            });
             video.srcObject = stream;
             video.play();
 
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.width = 640;
-            canvas.height = 480;
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            canvas.width = 640; // Set canvas width
+            canvas.height = 480; // Set canvas height
 
             setTimeout(() => {
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const imageData = canvas.toDataURL('image/png');
+                const imageData = canvas.toDataURL("image/png");
                 setImage(imageData);
-                setIsReadyForVoting(true); // Enable voting after capturing image
-                stream.getTracks().forEach(track => track.stop());
-            }, 3000);
+                stream.getTracks().forEach((track) => track.stop());
+            }, 3000); // Capture image after 3 seconds
         } catch (error) {
-            console.error('Error accessing the camera:', error);
-            setError('Could not access the camera. Please check your device settings.');
+            console.error("Error accessing the camera:", error);
+            setError(
+                "Could not access the camera. Please check your device settings."
+            );
         }
     };
 
+    const hasVoted = async () => {
+        try {
+            const response = await axios.put(
+                `${backendUrl}/api/auth/has-voted/${user.user._id}`
+            );
+            console.log("has vote",response.data)
+            console.log("local storage",user)
+
+            localStorage.setItem("user", JSON.stringify(response.data));
+
+            return response.data.hasVoted;
+        } catch (error) {
+            console.error("Error checking if user has voted:", error);
+            toast.error(error.response.data.message||"Error checking if user has voted");
+            return false;
+        }
+    }
+
+    // Function to upload image and cast a vote
     const voteForParty = async (partyId, partyName) => {
         if (!adminPassword || !voterId || !image) {
-            alert('Please provide admin password, voter ID, and capture an image.');
+            alert(
+                "Please provide admin password, voter ID, and capture an image."
+            );
             return;
         }
 
         try {
             const uploadedImageUrl = await uploadImageToS3(image); // Upload image to S3
-
             const payload = {
-                adminPassword: adminPassword,
+                password: adminPassword,
                 voterId: voterId,
-                image: uploadedImageUrl,
+                image: uploadedImageUrl, // Use the uploaded image URL
             };
 
-            const response = await axios.post(`http://localhost:8000/api/party/vote/${partyId}`, payload);
+            await axios.post(
+                `${backendUrl}/api/party/vote/${partyId}`,
+                payload
+            );
             setSelectedParty(partyName);
             setVoted(true);
 
+            hasVoted()
+
             setTimeout(() => {
-                navigate('/');
+                navigate("/"); // Navigate to the homepage after 10 seconds
             }, 10000);
         } catch (error) {
-            alert('Failed to cast vote. Invalid admin password, voter ID, or image upload failed.');
-            console.log('Error during vote:', error.response ? error.response.data : error.message);
+            alert(
+                "Failed to cast vote. Invalid admin password, voter ID, or image upload failed."
+            );
+            console.log(error);
         }
     };
 
+    // Countdown timer for redirecting after voting
     useEffect(() => {
         if (voted && countdown > 0) {
             const timer = setInterval(() => {
-                setCountdown(prev => prev - 1);
+                setCountdown((prev) => prev - 1);
             }, 1000);
             return () => clearInterval(timer);
         }
     }, [voted, countdown]);
-
-    const handlePasswordInput = (e) => {
-        setAdminPassword(e.target.value);
-    };
 
     if (loading) {
         return <div className="text-center text-xl">Loading parties...</div>;
@@ -247,17 +239,26 @@ const VotingPage = () => {
         return <div className="text-center text-red-500">{error}</div>;
     }
 
+    // Ballot paper confirmation page after voting
     if (voted) {
         return (
             <div className="min-h-screen flex flex-col justify-center items-center bg-gray-200">
                 <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-                    <h1 className="text-3xl font-bold mb-4">Thank You for Voting!</h1>
-                    <p className="text-xl">You voted for: <span className="font-semibold">{selectedParty}</span></p>
-                    <p className="text-lg mt-4">Redirecting to the homepage in {countdown} seconds...</p>
+                    <h1 className="text-3xl font-bold mb-4">
+                        Thank You for Voting!
+                    </h1>
+                    <p className="text-xl">
+                        You voted for:{" "}
+                        <span className="font-semibold">{selectedParty}</span>
+                    </p>
+                    <p className="text-lg mt-4">
+                        Redirecting to the homepage in {countdown} seconds...
+                    </p>
                 </div>
             </div>
         );
     }
+
 
     return (
         <div>

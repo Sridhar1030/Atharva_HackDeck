@@ -127,4 +127,26 @@ const getUserInfo = asyncHandler(async (req, res) => {
 	});
 });
 
-export { loginUser, getUserLocation,getUserInfo };
+const hasVotedUser = asyncHandler(async (req, res) => {
+    const { _id } = req.params;
+
+    const user = await User.findById(_id);
+
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.hasVoted) {
+        return res.status(400).json({ message: "User has already voted" });
+    }
+
+    user.hasVoted = true;
+
+    await user.save();
+
+    return res.status(200).json({ message: "User has voted successfully" ,user});
+});
+
+
+export { loginUser, getUserLocation, hasVotedUser,getUserInfo };
+

@@ -75,23 +75,6 @@ const VotingPage = () => {
     };
 
 
-    const hasVoted = async () => {
-        try {
-            const response = await axios.put(
-                `http://localhost:8000/api/auth/has-voted/${user.user._id}`
-            );
-            console.log("has vote", response.data)
-            console.log("local storage", user)
-
-            localStorage.setItem("user", JSON.stringify(response.data));
-
-            return response.data.hasVoted;
-        } catch (error) {
-            console.error("Error checking if user has voted:", error);
-            toast.error(error.response.data.message || "Error checking if user has voted");
-            return false;
-        }
-    }
 
     // Load speech synthesis voices
     useEffect(() => {

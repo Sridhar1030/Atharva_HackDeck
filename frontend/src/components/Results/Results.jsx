@@ -9,10 +9,12 @@ const ResultsPage = () => {
     const [partyData, setPartyData] = useState([]);
     const [error, setError] = useState('');
 
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
     useEffect(() => {
         const fetchPartyData = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/party/');
+                const response = await axios.get(`${backendUrl}/api/party/`);
                 setPartyData(response.data);
             } catch (error) {
                 setError('Failed to fetch party data.');

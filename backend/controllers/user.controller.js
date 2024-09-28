@@ -50,7 +50,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
     if (!voter) {
         return res.status(400).json({
-            message: "VoterId not verified. Please use a valid participant VoterId.",
+            message:
+                "VoterId not verified. Please use a valid participant VoterId.",
         });
     }
 
@@ -76,16 +77,16 @@ const loginUser = asyncHandler(async (req, res) => {
         await user.save();
     }
 
-    const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
+    const { accessToken, refreshToken } =
+        await generateAccessTokenAndRefreshToken(user._id);
 
     const userData = user.toObject();
     delete userData.password;
     delete userData.refreshToken;
 
-
     const options = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === "production",
     };
 
     return res
@@ -99,9 +100,8 @@ const loginUser = asyncHandler(async (req, res) => {
         });
 });
 
-
 const getUserLocation = asyncHandler(async (req, res) => {
-    const { _id } = req.params; 
+    const { _id } = req.params;
     const user = await User.findById(_id);
 
     if (!user) {
@@ -111,8 +111,28 @@ const getUserLocation = asyncHandler(async (req, res) => {
     return res.status(200).json({
         message: "User location fetched successfully",
         location: user.location,
-    }); 
+    });
+});
+
+const hasVotedUser = asyncHandler(async (req, res) => {
+    const { _id } = req.params;
+
+    const user = await User.findById(_id);
+
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.hasVoted) {
+        return res.status(400).json({ message: "User has already voted" });
+    }
+
+    user.hasVoted = true;
+
+    await user.save();
+
+    return res.status(200).json({ message: "User has voted successfully" ,user});
 });
 
 
-export { loginUser , getUserLocation};
+export { loginUser, getUserLocation, hasVotedUser };

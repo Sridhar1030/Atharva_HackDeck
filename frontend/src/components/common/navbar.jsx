@@ -12,9 +12,9 @@ const menuItems = [
         name: 'Features',
         dropdown: true,
         links: [
-            { name: 'Link 1', href: '/ElectorsComponent' },
-            { name: 'Link 2', href: '/CandidateSearch' },
-            { name: 'Link 3', href: '/VoterEducation' }
+            { name: 'ElectorsComponent', href: '/ElectorsComponent' },
+            { name: 'CandidateSearch', href: '/CandidateSearch' },
+            { name: 'VoterEducation', href: '/VoterEducation' }
         ]
     }
 ]

@@ -15,3 +15,5 @@ logs
 
 # Express
 /backend/node_modules
+.env
+/backend/.env
